@@ -1,0 +1,70 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "num",
+						"type": "uint256"
+					}
+				],
+				"name": "intToRoman",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/IntToRoman.sol": "IntToRoman"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/IntToRoman.sol": {
+			"keccak256": "0x1265cc5a9d9f826f382c729e6324c9c11c2ab273419df8a686e514b26aa3f095",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://11f18b1091d4225b46d7eb81524de9bd533a0636cb912395778085471830b446",
+				"dweb:/ipfs/QmXeQaz7EUFqBDF2vAMbXPJixKApBP1qPy3mrH1ZYujLtD"
+			]
+		}
+	},
+	"version": 1
+}

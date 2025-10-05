@@ -1,0 +1,85 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "candidate",
+						"type": "address"
+					}
+				],
+				"name": "getVotes",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "resetVotes",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "candidate",
+						"type": "address"
+					}
+				],
+				"name": "vote",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Voting.sol": "Voting"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Voting.sol": {
+			"keccak256": "0x65c3b1bc34eaf9e79bd11af7e3b198dd34cd70d3ddd9787adf2c81b4085d9368",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://88c9e01e45b60f560b29e0d51006bb5fff9acb9b17b61152ccda631105417fdc",
+				"dweb:/ipfs/QmX3ZqG1oAwDdoMnPE8QKR1LrsjN5ZntvUGnFcNZD9ktrB"
+			]
+		}
+	},
+	"version": 1
+}
