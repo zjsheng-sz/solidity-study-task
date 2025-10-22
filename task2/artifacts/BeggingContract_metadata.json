@@ -62,13 +62,7 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
+				"inputs": [],
 				"name": "donate",
 				"outputs": [
 					{
@@ -154,11 +148,11 @@
 	},
 	"sources": {
 		"contracts/BeggingContract.sol": {
-			"keccak256": "0x23978b76d92331f423d32ab85860a063a5cc726c248dccfbaded8a61198d0899",
+			"keccak256": "0xed04196a2098d0b26211c5b6bff414790b4ab9dc62b9b3e038603b89b87c19e8",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fe126b2434330a1caeb943a3afb7f2b30c2ea63d6fb41e6d4485332ae1010f9c",
-				"dweb:/ipfs/Qme8zFkW7KQfXJr18DB89L1rKd8MrkSmTtTX6kMfQWVsDG"
+				"bzz-raw://ce0b2c8560342ad057c6c0b15599a1851b4f29898832922713c68fedb39867d0",
+				"dweb:/ipfs/QmQzXo66p8VQ9My4MT7GT4M9oBkWmADU73HevfarZuwaXC"
 			]
 		}
 	},

@@ -23,8 +23,8 @@ contract BeggingContract {
     event Donation(address account, uint256 amount);
 
     //允许用户向合  约发送以太币，并记录捐赠信息
-    function donate(uint256 amount) payable public returns (bool) {
-        require(amount > 0, "amount need greater 0");
+    function donate() payable public returns (bool) {
+        require(msg.value > 0, "amount need greater 0");
 
         require(block.timestamp < _endtime, "time out");
 
@@ -32,9 +32,9 @@ contract BeggingContract {
             _acounts.push(msg.sender);
         }
 
-        _donateAmont[msg.sender] += amount;
+        _donateAmont[msg.sender] += msg.value;
 
-        emit Donation(msg.sender, amount);
+        emit Donation(msg.sender, msg.value);
         return true;
     }
 
@@ -60,28 +60,34 @@ contract BeggingContract {
             return top3;
         }
 
-        for (uint256 i = 0; i < _acounts.length; i++) 
+            // 创建内存副本避免修改原始数据
+        address[] memory accountsCopy = new address[](_acounts.length);
+        for (uint i = 0; i < _acounts.length; i++) {
+            accountsCopy[i] = _acounts[i];
+        }
+
+        for (uint256 i = 0; i < accountsCopy.length; i++) 
         {
-            for (uint256 j = i + 1; j < _acounts.length ; j++) 
+            for (uint256 j = i + 1; j < accountsCopy.length ; j++) 
             {
-                if ( _donateAmont[_acounts[i]] < _donateAmont[_acounts[i]]) {
-                        address tmp = _acounts[i];
-                        _acounts[i] = _acounts[j];
-                        _acounts[j] = tmp;
+                if ( _donateAmont[accountsCopy[i]] < _donateAmont[accountsCopy[i]]) {
+                        address tmp = accountsCopy[i];
+                        accountsCopy[i] = accountsCopy[j];
+                        accountsCopy[j] = tmp;
                 }
             }
         }
 
-        if (_acounts.length >= 1) {
-            top3[0] = _acounts[0];
+        if (accountsCopy.length >= 1) {
+            top3[0] = accountsCopy[0];
         }
         
-        if (_acounts.length >= 2) {
-            top3[1] = _acounts[1];
+        if (accountsCopy.length >= 2) {
+            top3[1] = accountsCopy[1];
         }
 
-        if (_acounts.length >= 3) {
-            top3[2] = _acounts[2];
+        if (accountsCopy.length >= 3) {
+            top3[2] = accountsCopy[2];
         }
         return top3;
     
