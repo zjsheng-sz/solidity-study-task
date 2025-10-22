@@ -1,0 +1,16 @@
+{
+  "description": "this a test nft saved in ipfs by filebase", 
+  "external_url": "https://openseacreatures.io/3", 
+  "image": "ipfs://QmcpfFgrYURKq5P7hedCXvsvjbAyqjkUaQzK4aAEo15ZgT", 
+  "name": "my first nft!",
+  "attributes": [
+    {
+      "trait_type": "稀有度",
+      "value": "普通"
+    },
+    {
+      "trait_type": "艺术家", 
+      "value": "zjs"
+    }
+  ]
+}
