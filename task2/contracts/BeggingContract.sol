@@ -12,7 +12,7 @@ contract BeggingContract {
 
     constructor(uint256 endDay) {
         _owner = msg.sender;
-        _endtime = block.timestamp + endDay*1 days;
+        _endtime = block.timestamp + (endDay*1 days);
     }
 
     modifier onlyOwner() {
@@ -54,7 +54,7 @@ contract BeggingContract {
 
 
     //显示捐赠金额最多的前 3 个地址
-    function getTop3() public returns (address[3] memory top3) {
+    function getTop3() public view  returns (address[3] memory top3) {
 
         if (_acounts.length == 0)  {
             return top3;
@@ -66,11 +66,11 @@ contract BeggingContract {
             accountsCopy[i] = _acounts[i];
         }
 
-        for (uint256 i = 0; i < accountsCopy.length; i++) 
+        for (uint i = 0; i < accountsCopy.length; i++) 
         {
-            for (uint256 j = i + 1; j < accountsCopy.length ; j++) 
+            for (uint j = i + 1; j < accountsCopy.length ; j++) 
             {
-                if ( _donateAmont[accountsCopy[i]] < _donateAmont[accountsCopy[i]]) {
+                if ( _donateAmont[accountsCopy[i]] < _donateAmont[accountsCopy[j]]) {
                         address tmp = accountsCopy[i];
                         accountsCopy[i] = accountsCopy[j];
                         accountsCopy[j] = tmp;

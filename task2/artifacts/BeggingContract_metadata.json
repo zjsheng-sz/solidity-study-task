@@ -103,7 +103,7 @@
 						"type": "address[3]"
 					}
 				],
-				"stateMutability": "nonpayable",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -148,11 +148,11 @@
 	},
 	"sources": {
 		"contracts/BeggingContract.sol": {
-			"keccak256": "0xed04196a2098d0b26211c5b6bff414790b4ab9dc62b9b3e038603b89b87c19e8",
+			"keccak256": "0xae12d95df1a3b7bb98a1cefcf9229634f846d0868f6175ae8cb83164cdb3b8f5",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ce0b2c8560342ad057c6c0b15599a1851b4f29898832922713c68fedb39867d0",
-				"dweb:/ipfs/QmQzXo66p8VQ9My4MT7GT4M9oBkWmADU73HevfarZuwaXC"
+				"bzz-raw://d00ccabeb9cb7229117b2eef29f2bfae5bb46a86319fb6660665f430bdf75b59",
+				"dweb:/ipfs/QmahnpQnnJvNDby1f5mAPz5ZxuniJRACCJ87pbASRcaYX6"
 			]
 		}
 	},
