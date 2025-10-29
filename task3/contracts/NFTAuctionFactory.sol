@@ -13,7 +13,7 @@ contract NFTAuctionFactory {
     // 映射：用户地址 => 创建的拍卖列表
     mapping(address => address[]) public userAuctions;
 
-        // 事件
+    // 事件
     event AuctionCreated(
         address indexed seller,
         address indexed nftContract,
@@ -28,17 +28,23 @@ contract NFTAuctionFactory {
         uint256 tokenId,
         address paymentToken,
         uint256 startPrice,
+        uint256 usdStartPrice,
         uint256 startTime,
         uint256 duration,
         uint256 minBidIncrement
     ) external returns (address auction) {
         require(nftContract != address(0), "Invalid NFT contract");
-        require(constractAuction[nftContract][tokenId] == address(0), "Auction exists");
+        require(
+            constractAuction[nftContract][tokenId] == address(0),
+            "Auction exists"
+        );
         require(duration > 0, "Invalid duration");
         require(startTime > block.timestamp, "startTime must be future");
 
         bytes memory bytecode = type(NFTAuction).creationCode;
-        bytes32 salt = keccak256(abi.encodePacked(nftContract,tokenId,block.timestamp));
+        bytes32 salt = keccak256(
+            abi.encodePacked(nftContract, tokenId, block.timestamp)
+        );
 
         assembly {
             auction := create2(0, add(bytecode, 32), mload(bytecode), salt)
@@ -50,6 +56,7 @@ contract NFTAuctionFactory {
             tokenId: tokenId,
             paymentToken: paymentToken,
             startPrice: startPrice,
+            usdStartPrice: usdStartPrice,
             startTime: startTime,
             duration: duration,
             minBidIncrement: minBidIncrement
@@ -62,27 +69,33 @@ contract NFTAuctionFactory {
         constractAuction[nftContract][tokenId] = auction;
         userAuctions[msg.sender].push(auction);
 
-        emit AuctionCreated(msg.sender, nftContract, tokenId, auction, allAuctions.length-1);
-
+        emit AuctionCreated(
+            msg.sender,
+            nftContract,
+            tokenId,
+            auction,
+            allAuctions.length - 1
+        );
     }
 
-        // 获取所有拍卖数量
+    // 获取所有拍卖数量
     function allAuctionsLength() external view returns (uint256) {
         return allAuctions.length;
     }
 
     // 获取用户创建的拍卖
-    function getUserAuctions(address user) external view returns (address[] memory) {
+    function getUserAuctions(
+        address user
+    ) external view returns (address[] memory) {
         return userAuctions[user];
     }
 
     // 获取用户拍卖数量
     function getUserAuctionCount(address user) external view returns (uint256) {
-
         return userAuctions[user].length;
     }
 
-     // 批量结束过期拍卖（工厂维护功能）
+    // 批量结束过期拍卖（工厂维护功能）
     function endExpiredAuctions(address[] calldata auctions) external {
         for (uint256 i = 0; i < auctions.length; i++) {
             NFTAuction auction = NFTAuction(auctions[i]);
