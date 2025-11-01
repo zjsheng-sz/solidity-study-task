@@ -2,8 +2,24 @@
 pragma solidity ^0.8.19;
 
 import "./NFTAuction.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-contract NFTAuctionFactory {
+contract NFTAuctionFactory is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize() external initializer {
+        __UUPSUpgradeable_init();
+        __Ownable_init(msg.sender);
+    }
+
+    // UUPS 升级授权函数
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+
     // 所有拍卖合约地址
     address[] public allAuctions;
 
@@ -62,7 +78,7 @@ contract NFTAuctionFactory {
             minBidIncrement: minBidIncrement
         });
 
-        NFTAuction(auction).initialize(config);
+        NFTAuction(auction).initialize(config, address(this));
 
         // 记录拍卖信息
         allAuctions.push(auction);

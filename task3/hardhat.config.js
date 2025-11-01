@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("@openzeppelin/hardhat-upgrades");
 require("dotenv").config(); // 用于加载环境变量
 
 // 从 .env 文件读取敏感信息

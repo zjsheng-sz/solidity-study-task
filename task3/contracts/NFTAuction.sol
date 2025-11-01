@@ -4,11 +4,19 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-contract NFTAuction is ReentrancyGuard {
+contract NFTAuction is
+    Initializable,
+    UUPSUpgradeable,
+    OwnableUpgradeable,
+    ReentrancyGuardUpgradeable
+{
     using Address for address payable;
 
     // Chainlink 价格喂价合约地址 (主网)
@@ -66,12 +74,21 @@ contract NFTAuction is ReentrancyGuard {
 
     address public factory;
 
+    /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
-        factory = msg.sender; // 工厂地址
+        _disableInitializers();
     }
 
     // 工厂调用的初始化函数
-    function initialize(AuctionConfig memory config) external onlyFactory {
+    function initialize(
+        AuctionConfig memory config,
+        address _factory
+    ) external initializer {
+        __UUPSUpgradeable_init();
+        __Ownable_init(msg.sender);
+        __ReentrancyGuard_init();
+
+        factory = _factory;
         require(seller == address(0), "Already initialized");
 
         seller = config.seller;
@@ -87,6 +104,11 @@ contract NFTAuction is ReentrancyGuard {
         // 转移NFT到拍卖合约
         IERC721(nftContract).transferFrom(seller, address(this), tokenId);
     }
+
+    // UUPS 升级授权函数
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 
     function placeBid(uint256 bidAmount) external payable nonReentrant {
         require(block.timestamp >= startTime, "Auction not started");
