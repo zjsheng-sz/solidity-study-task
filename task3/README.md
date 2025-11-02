@@ -1,13 +1,178 @@
-# Sample Hardhat Project
+# NFT Auction Contract - 测试套件
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+本项目提供了完整的NFT拍卖合约测试套件，包括单元测试和集成测试，覆盖所有核心功能。
 
-Try running some of the following tasks:
+## 测试结构
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
 ```
+test/
+├── unit/                    # 单元测试
+│   ├── NFTAuction.test.js   # 拍卖合约单元测试
+│   └── NFTAuctionFactory.test.js # 工厂合约单元测试
+└── integration/             # 集成测试
+    └── auctionFlow.test.js  # 完整拍卖流程集成测试
+```
+
+## 测试覆盖范围
+
+### 单元测试 (`test/unit/`)
+
+#### NFTAuction.test.js
+- **拍卖初始化测试**
+  - 正确初始化拍卖参数
+  - NFT转移验证
+  
+- **出价功能测试**
+  - 有效出价接受
+  - 低于起拍价出价拒绝
+  - 低于最小加价出价拒绝
+  - 出价退款机制验证
+
+- **拍卖结束测试**
+  - 正常结束拍卖并转移NFT
+  - 无人出价时退回NFT
+  - 拍卖取消功能
+  - 出价后禁止取消
+
+- **价格转换测试**
+  - ETH到USD转换功能
+
+- **拍卖信息查询测试**
+  - 正确返回拍卖信息
+
+#### NFTAuctionFactory.test.js
+- **工厂初始化测试**
+  - 正确初始化工厂
+
+- **拍卖创建测试**
+  - 成功创建拍卖
+  - 防止重复创建拍卖
+  - 参数验证（无效NFT地址、持续时间、开始时间）
+
+- **拍卖管理测试**
+  - 正确跟踪所有拍卖
+  - 用户拍卖列表管理
+  - 按NFT合约和tokenId查找拍卖
+
+- **过期拍卖管理测试**
+  - 批量结束过期拍卖
+  - 优雅处理失败拍卖
+
+### 集成测试 (`test/integration/`)
+
+#### auctionFlow.test.js
+- **完整拍卖生命周期测试**
+  - 多出价者竞拍流程
+  - 退款机制验证
+  - NFT和资金转移验证
+
+- **多拍卖管理测试**
+  - 并发拍卖管理
+  - 批量结束功能
+
+- **拍卖发现测试**
+  - 用户通过工厂发现拍卖
+  - 参与竞拍流程
+
+- **边界情况和错误处理测试**
+  - 拍卖时间延长机制
+  - 无效操作预防
+
+## 运行测试
+
+### 安装依赖
+```bash
+npm install
+```
+
+### 运行所有测试
+```bash
+npm test
+```
+
+### 运行单元测试
+```bash
+npm run test:unit
+```
+
+### 运行集成测试
+```bash
+npm run test:integration
+```
+
+### 生成测试覆盖率报告
+```bash
+npm run test:coverage
+```
+
+## 测试特性
+
+### 1. 全面覆盖
+- 覆盖所有合约函数
+- 测试正常流程和异常情况
+- 验证事件触发
+- 检查状态变化
+
+### 2. 模拟真实场景
+- 多用户交互测试
+- 时间推进测试（拍卖开始/结束）
+- 资金转移验证
+- NFT所有权转移验证
+
+### 3. 错误处理
+- 参数验证测试
+- 权限控制测试
+- 边界条件测试
+- 异常情况处理
+
+### 4. 集成测试
+- 合约间交互测试
+- 完整业务流程测试
+- 工厂模式验证
+- 批量操作测试
+
+## 测试数据
+
+### Mock合约
+- `MockNFT.sol`: 用于测试的模拟NFT合约
+- 支持批量铸造功能
+- 简化测试设置
+
+### 测试账户
+测试使用以下账户角色：
+- `owner`: 合约所有者
+- `seller`: NFT卖家
+- `bidder1`, `bidder2`, `bidder3`: 出价者
+
+## 测试配置
+
+### Hardhat配置
+- Solidity 0.8.19
+- 优化器启用（200次运行）
+- 本地网络配置
+- 测试超时设置（40秒）
+
+### 覆盖率配置
+- 排除测试文件和构建产物
+- 专注于合约代码覆盖率
+
+## 测试最佳实践
+
+1. **独立测试**: 每个测试用例独立运行
+2. **状态清理**: 使用beforeEach清理测试状态
+3. **事件验证**: 验证重要事件的触发
+4. **错误消息**: 检查具体的错误消息
+5. **边界测试**: 测试最小/最大值边界
+6. **集成验证**: 验证合约间的正确交互
+
+## 故障排除
+
+### 常见问题
+1. **测试超时**: 增加mocha超时时间
+2. **Gas不足**: 确保测试账户有足够资金
+3. **网络问题**: 检查本地网络连接
+
+### 调试技巧
+- 使用`console.log`输出调试信息
+- 检查交易回执
+- 验证合约状态变化
