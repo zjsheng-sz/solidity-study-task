@@ -6,7 +6,11 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-contract NFTAuctionFactory is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract NFTAuctionFactory is
+    Initializable,
+    UUPSUpgradeable,
+    OwnableUpgradeable
+{
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -18,7 +22,9 @@ contract NFTAuctionFactory is Initializable, UUPSUpgradeable, OwnableUpgradeable
     }
 
     // UUPS 升级授权函数
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 
     // 所有拍卖合约地址
     address[] public allAuctions;
@@ -78,7 +84,7 @@ contract NFTAuctionFactory is Initializable, UUPSUpgradeable, OwnableUpgradeable
             minBidIncrement: minBidIncrement
         });
 
-        NFTAuction(auction).initialize(config, address(this));
+        NFTAuction(auction).initialize(config);
 
         // 记录拍卖信息
         allAuctions.push(auction);

@@ -8,8 +8,8 @@ async function main() {
   // 部署 MyNFT 合约（不可升级）
   const MyNFT = await ethers.getContractFactory("MyNFT");
   const myNFT = await MyNFT.deploy();
-  await myNFT.deployed();
-  console.log("MyNFT deployed to:", myNFT.address);
+  await myNFT.waitForDeployment();
+  console.log("MyNFT waitForDeployment to:", myNFT.address);
 
   // 部署 NFTAuctionFactory 可升级合约
   const NFTAuctionFactory = await ethers.getContractFactory("NFTAuctionFactory");
@@ -17,8 +17,8 @@ async function main() {
     initializer: "initialize",
     kind: "uups"
   });
-  await factory.deployed();
-  console.log("NFTAuctionFactory deployed to:", factory.address);
+  await factory.waitForDeployment();
+  console.log("NFTAuctionFactory waitForDeployment to:", factory.address);
 
 
   // 获取代理合约的实现地址
@@ -33,7 +33,7 @@ async function main() {
     network: network.name,
     deployer: deployer.address
   };
-  
+
   // 写入文件以便前端使用
   const fs = require('fs');
   fs.writeFileSync('deployment-upgradeable.json', JSON.stringify(deploymentInfo, null, 2));
