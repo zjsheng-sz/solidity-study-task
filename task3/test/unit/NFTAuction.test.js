@@ -1,281 +1,389 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("NFTAuction Unit Tests", function () {
-  let NFTAuction;
-  let nftAuction;
-  let MyNFT;
-  let nftContract;
-  let owner;
-  let seller;
-  let bidder1;
-  let bidder2;
+describe("NFTAuction", function () {
+  let NFTAuction, auction;
+  let MockERC721, mockERC721;
+  let MockERC20, mockERC20;
+  let MockPriceFeed, mockEthPriceFeed, mockErc20PriceFeed;
+
+  let owner, seller, bidder1, bidder2, factory;
+
+  // 测试常量
+  const TOKEN_ID = 1;
+  const START_PRICE_ETH = ethers.parseEther("1.0");
+  const START_PRICE_USD = 3000 * 1e8; // 3000 USD (8 decimals)
+  const DURATION = 3600; // 1小时
+  const MIN_BID_INCREMENT = ethers.parseEther("0.1");
 
   beforeEach(async function () {
-    [owner, seller, bidder1, bidder2] = await ethers.getSigners();
+    [owner, seller, bidder1, bidder2, factory] = await ethers.getSigners();
 
-    // 部署MyNFT合约
-    MyNFT = await ethers.getContractFactory("MyNFT");
-    nftContract = await MyNFT.deploy();
-    await nftContract.waitForDeployment();
+    // 部署 Mock ERC721
+    MockERC721 = await ethers.getContractFactory("MockERC721");
+    mockERC721 = await MockERC721.deploy("Test NFT", "TNFT");
+    await mockERC721.waitForDeployment();
 
-    // 部署NFTAuction合约
+    // 部署 Mock ERC20
+    MockERC20 = await ethers.getContractFactory("MockERC20");
+    mockERC20 = await MockERC20.deploy("Test Token", "TEST", 18);
+    await mockERC20.waitForDeployment();
+
+    // 部署 Mock Price Feed
+    MockPriceFeed = await ethers.getContractFactory("MockPriceFeed");
+    mockEthPriceFeed = await MockPriceFeed.deploy(3000 * 1e8); // 3000 USD
+    await mockEthPriceFeed.waitForDeployment();
+
+    mockErc20PriceFeed = await MockPriceFeed.deploy(1 * 1e8); // 1 USD
+    await mockErc20PriceFeed.waitForDeployment();
+
+    // 部署 Auction
     NFTAuction = await ethers.getContractFactory("NFTAuction");
-    nftAuction = await NFTAuction.deploy();
-    await nftAuction.waitForDeployment();
+    auction = await NFTAuction.deploy();
+    await auction.waitForDeployment();
 
-    // 卖家铸造一个NFT
-    const tokenId = await nftContract.mintNFT(seller.address, "https://example.com/token/1");
+    // // 创建新的拍卖合约
+    // const AuctionFactory = await ethers.getContractFactory("AuctionFactory");
+    // const auctionFactoryContract = await AuctionFactory.deploy();
+
+    // // 为测试简化，直接使用 NFTAuction 合约
+    // auction = await ethers.deployContract("NFTAuction");
+    // await auction.waitForDeployment();
+
+    // 铸造 NFT 给卖家
+    await mockERC721.mint(seller.address, TOKEN_ID);
+
+    // 铸造 ERC20 代币给投标人
+    await mockERC20.mint(bidder1.address, ethers.parseEther("1000"));
+    await mockERC20.mint(bidder2.address, ethers.parseEther("1000"));
   });
 
-  describe("Auction Initialization", function () {
-    it("should initialize auction with correct parameters", async function () {
-      const tokenId = 1;
-      const startPrice = ethers.parseEther("1.0");
-      const usdStartPrice = ethers.parseEther("2000.0"); // 假设1 ETH = 2000 USD
-      const startTime = Math.floor(Date.now() / 1000) + 60; // 1分钟后开始
-      const duration = 3600; // 1小时
-      const minBidIncrement = ethers.parseEther("0.1");
+  describe("拍卖初始化", function () {
+    it("应该正确初始化拍卖参数", async function () {
+      const startTime = Math.floor(Date.now() / 1000) + 100;
+      const auctionConfig = {
+        seller: seller.address,
+        nftContract: await mockERC721.getAddress(),
+        tokenId: TOKEN_ID,
+        paymentToken: ethers.ZeroAddress, // ETH
+        startPrice: START_PRICE_ETH,
+        usdStartPrice: START_PRICE_USD,
+        startTime: startTime,
+        duration: DURATION,
+        minBidIncrement: MIN_BID_INCREMENT
+      };
 
-      // 卖家授权NFT给拍卖合约
-      await nftContract.connect(seller).approve(nftAuction.target, tokenId);
+      // 批准 NFT 转移
+      await mockERC721.connect(seller).approve(await auction.getAddress(), TOKEN_ID);
 
       // 初始化拍卖
-      await nftAuction.initialize(
-        {
-          seller: seller.address,
-          nftContract: nftContract.target,
-          tokenId: tokenId,
-          paymentToken: ethers.ZeroAddress, // ETH
-          startPrice: startPrice,
-          usdStartPrice: usdStartPrice,
-          startTime: startTime,
-          duration: duration,
-          minBidIncrement: minBidIncrement
-        },
-        owner.address // factory地址
-      );
+      await auction.initialize(auctionConfig);
 
-      // 验证拍卖参数
-      expect(await nftAuction.seller()).to.equal(seller.address);
-      expect(await nftAuction.nftContract()).to.equal(nftContract.target);
-      expect(await nftAuction.tokenId()).to.equal(tokenId);
-      expect(await nftAuction.startPrice()).to.equal(startPrice);
-      expect(await nftAuction.startTime()).to.equal(startTime);
-      expect(await nftAuction.endTime()).to.equal(startTime + duration);
+      const auctionInfo = await auction.getAuctionInfo();
+
+      expect(auctionInfo[0]).to.equal(seller.address); // seller
+      expect(auctionInfo[1]).to.equal(await mockERC721.getAddress()); // nftContract
+      expect(auctionInfo[2]).to.equal(TOKEN_ID); // tokenId
+      expect(auctionInfo[3]).to.equal(START_PRICE_ETH); // startPrice
+      expect(auctionInfo[5]).to.equal(startTime); // startTime
     });
 
-    it("should transfer NFT to auction contract on initialization", async function () {
-      const tokenId = 1;
-      
-      await nftContract.connect(seller).approve(nftAuction.target, tokenId);
-      
-      await nftAuction.initialize(
-        {
-          seller: seller.address,
-          nftContract: nftContract.target,
-          tokenId: tokenId,
-          paymentToken: ethers.ZeroAddress,
-          startPrice: ethers.parseEther("1.0"),
-          usdStartPrice: ethers.parseEther("2000.0"),
-          startTime: Math.floor(Date.now() / 1000) + 60,
-          duration: 3600,
-          minBidIncrement: ethers.parseEther("0.1")
-        },
-        owner.address
-      );
+    it("应该拒绝重复初始化", async function () {
+      const startTime = Math.floor(Date.now() / 1000) + 100;
+      const auctionConfig = {
+        seller: seller.address,
+        nftContract: await mockERC721.getAddress(),
+        tokenId: TOKEN_ID,
+        paymentToken: ethers.ZeroAddress,
+        startPrice: START_PRICE_ETH,
+        usdStartPrice: START_PRICE_USD,
+        startTime: startTime,
+        duration: DURATION,
+        minBidIncrement: MIN_BID_INCREMENT
+      };
 
-      expect(await nftContract.ownerOf(tokenId)).to.equal(nftAuction.target);
+      await mockERC721.connect(seller).approve(await auction.getAddress(), TOKEN_ID);
+
+      await auction.initialize(auctionConfig);
+
+      await expect(auction.initialize(auctionConfig))
+        .to.be.revertedWith("Already initialized");
     });
   });
 
-  describe("Bidding Functionality", function () {
+  describe("ETH 拍卖", function () {
     beforeEach(async function () {
-      const tokenId = 1;
-      await nftContract.connect(seller).approve(nftAuction.target, tokenId);
-      
-      await nftAuction.initialize(
-        {
-          seller: seller.address,
-          nftContract: nftContract.target,
-          tokenId: tokenId,
-          paymentToken: ethers.ZeroAddress,
-          startPrice: ethers.parseEther("1.0"),
-          usdStartPrice: ethers.parseEther("2000.0"),
-          startTime: Math.floor(Date.now() / 1000),
-          duration: 3600,
-          minBidIncrement: ethers.parseEther("0.1")
-        },
-        owner.address
-      );
+      const startTime = Math.floor(Date.now() / 1000) - 100; // 已开始
+      const auctionConfig = {
+        seller: seller.address,
+        nftContract: await mockERC721.getAddress(),
+        tokenId: TOKEN_ID,
+        paymentToken: ethers.ZeroAddress,
+        startPrice: START_PRICE_ETH,
+        usdStartPrice: START_PRICE_USD,
+        startTime: startTime,
+        duration: DURATION,
+        minBidIncrement: MIN_BID_INCREMENT
+      };
+
+      await mockERC721.connect(seller).approve(await auction.getAddress(), TOKEN_ID);
+
+      await auction.initialize(auctionConfig);
+
+      // 设置价格预言机
+      await auction.connect(seller).setPriceFeed(ethers.ZeroAddress, await mockEthPriceFeed.getAddress());
     });
 
-    it("should accept valid bid", async function () {
-      const bidAmount = ethers.parseEther("1.5");
-      
-      await expect(nftAuction.connect(bidder1).placeBid(0, { value: bidAmount }))
-        .to.emit(nftAuction, "NewBid")
-        .withArgs(bidder1.address, bidAmount, expect.anything());
+    it("应该接受有效的 ETH 出价", async function () {
+      const bidAmount = START_PRICE_ETH;
 
-      expect(await nftAuction.highestBidder()).to.equal(bidder1.address);
-      expect(await nftAuction.highestBid()).to.equal(bidAmount);
+      await expect(auction.connect(bidder1).placeBid(0, { value: bidAmount }))
+        .to.emit(auction, "NewBid")
+        .withArgs(bidder1.address, bidAmount, START_PRICE_USD);
+
+      const auctionInfo = await auction.getAuctionInfo();
+      expect(auctionInfo[7]).to.equal(bidder1.address); // highestBidder
+      expect(auctionInfo[8]).to.equal(bidAmount); // highestBid
     });
 
-    it("should reject bid below start price", async function () {
-      const bidAmount = ethers.parseEther("0.5");
-      
-      await expect(
-        nftAuction.connect(bidder1).placeBid(0, { value: bidAmount })
-      ).to.be.revertedWith("Bid below start price");
+    it("应该拒绝低于起拍价的出价", async function () {
+      const lowBid = START_PRICE_ETH - ethers.parseEther("0.1");
+
+      await expect(auction.connect(bidder1).placeBid(0, { value: lowBid }))
+        .to.be.revertedWith("Bid below start price");
     });
 
-    it("should reject bid below minimum increment", async function () {
-      const firstBid = ethers.parseEther("1.5");
-      const secondBid = ethers.parseEther("1.55"); // 低于最小加价0.1 ETH
-      
-      await nftAuction.connect(bidder1).placeBid(0, { value: firstBid });
-      
-      await expect(
-        nftAuction.connect(bidder2).placeBid(0, { value: secondBid })
-      ).to.be.revertedWith("Bid too low");
-    });
-
-    it("should refund previous bidder when outbid", async function () {
-      const firstBid = ethers.parseEther("1.5");
-      const secondBid = ethers.parseEther("2.0");
-      
+    it("应该拒绝低于最小加价幅度的出价", async function () {
       // 第一个出价
-      await nftAuction.connect(bidder1).placeBid(0, { value: firstBid });
-      
+      await auction.connect(bidder1).placeBid(0, { value: START_PRICE_ETH });
+
+      // 第二个出价不够
+      const lowBid = START_PRICE_ETH + MIN_BID_INCREMENT - ethers.parseEther("0.01");
+
+      await expect(auction.connect(bidder2).placeBid(0, { value: lowBid }))
+        .to.be.revertedWith("Bid too low");
+    });
+
+    it("应该退还前一个出价者的 ETH", async function () {
       const bidder1BalanceBefore = await ethers.provider.getBalance(bidder1.address);
-      
-      // 第二个出价，应该退还第一个出价者的资金
-      await nftAuction.connect(bidder2).placeBid(0, { value: secondBid });
-      
+
+      // 第一个出价
+      const bid1 = START_PRICE_ETH;
+      await auction.connect(bidder1).placeBid(0, { value: bid1 });
+
+      // 第二个更高的出价
+      const bid2 = START_PRICE_ETH + MIN_BID_INCREMENT;
+      await auction.connect(bidder2).placeBid(0, { value: bid2 });
+
+      // 检查 bidder1 是否收到退款
       const bidder1BalanceAfter = await ethers.provider.getBalance(bidder1.address);
-      
-      // 验证第一个出价者收到了退款
-      expect(bidder1BalanceAfter).to.be.gt(bidder1BalanceBefore);
-      expect(await nftAuction.highestBidder()).to.equal(bidder2.address);
+      expect(bidder1BalanceAfter).to.be.closeTo(bidder1BalanceBefore, ethers.parseEther("0.01"));
+    });
+
+    it("应该在最后5分钟有出价时延长拍卖时间", async function () {
+      // 设置拍卖即将结束
+      const newEndTime = Math.floor(Date.now() / 1000) + 4 * 60; // 4分钟后结束
+      await ethers.provider.send("evm_setNextBlockTimestamp", [newEndTime - 100]);
+
+      // 第一个出价
+      await auction.connect(bidder1).placeBid(0, { value: START_PRICE_ETH });
+
+      const auctionInfoBefore = await auction.getAuctionInfo();
+      const endTimeBefore = auctionInfoBefore[6];
+
+      // 在最后4分钟出价
+      await ethers.provider.send("evm_setNextBlockTimestamp", [newEndTime - 3 * 60]);
+      await auction.connect(bidder2).placeBid(0, {
+        value: START_PRICE_ETH + MIN_BID_INCREMENT
+      });
+
+      const auctionInfoAfter = await auction.getAuctionInfo();
+      const endTimeAfter = auctionInfoAfter[6];
+
+      expect(endTimeAfter).to.be.greaterThan(endTimeBefore);
+      expect(endTimeAfter - endTimeBefore).to.be.closeTo(5 * 60, 10);
     });
   });
 
-  describe("Auction Ending", function () {
+  describe("ERC20 拍卖", function () {
     beforeEach(async function () {
-      const tokenId = 1;
-      await nftContract.connect(seller).approve(nftAuction.target, tokenId);
-      
-      await nftAuction.initialize(
-        {
-          seller: seller.address,
-          nftContract: nftContract.target,
-          tokenId: tokenId,
-          paymentToken: ethers.ZeroAddress,
-          startPrice: ethers.parseEther("1.0"),
-          usdStartPrice: ethers.parseEther("2000.0"),
-          startTime: Math.floor(Date.now() / 1000),
-          duration: 60, // 短时间便于测试
-          minBidIncrement: ethers.parseEther("0.1")
-        },
-        owner.address
-      );
+      const startTime = Math.floor(Date.now() / 1000) - 100;
+      const auctionConfig = {
+        seller: seller.address,
+        nftContract: await mockERC721.getAddress(),
+        tokenId: TOKEN_ID,
+        paymentToken: await mockERC20.getAddress(),
+        startPrice: START_PRICE_ETH,
+        usdStartPrice: START_PRICE_USD,
+        startTime: startTime,
+        duration: DURATION,
+        minBidIncrement: MIN_BID_INCREMENT
+      };
+
+      await auction.initialize(auctionConfig);
+
+      // 设置价格预言机
+      await auction.setPriceFeed(await mockERC20.getAddress(), await mockErc20PriceFeed.getAddress());
     });
 
-    it("should end auction and transfer NFT to winner", async function () {
-      const bidAmount = ethers.parseEther("1.5");
-      
+    it("应该接受有效的 ERC20 出价", async function () {
+      const bidAmount = START_PRICE_ETH;
+
+      // 批准代币转移
+      await mockERC20.connect(bidder1).approve(await auction.getAddress(), bidAmount);
+
+      await expect(auction.connect(bidder1).placeBid(bidAmount))
+        .to.emit(auction, "NewBid")
+        .withArgs(bidder1.address, bidAmount, START_PRICE_USD);
+
+      const auctionInfo = await auction.getAuctionInfo();
+      expect(auctionInfo[7]).to.equal(bidder1.address);
+      expect(auctionInfo[8]).to.equal(bidAmount);
+    });
+
+    it("应该退还前一个出价者的 ERC20 代币", async function () {
+      const bidAmount1 = START_PRICE_ETH;
+      const bidAmount2 = START_PRICE_ETH + MIN_BID_INCREMENT;
+
+      // 批准代币转移
+      await mockERC20.connect(bidder1).approve(await auction.getAddress(), bidAmount2);
+      await mockERC20.connect(bidder2).approve(await auction.getAddress(), bidAmount2);
+
+      const bidder1BalanceBefore = await mockERC20.balanceOf(bidder1.address);
+
+      // 第一个出价
+      await auction.connect(bidder1).placeBid(bidAmount1);
+
+      // 第二个更高的出价
+      await auction.connect(bidder2).placeBid(bidAmount2);
+
+      // 检查 bidder1 是否收到退款
+      const bidder1BalanceAfter = await mockERC20.balanceOf(bidder1.address);
+      expect(bidder1BalanceAfter).to.equal(bidder1BalanceBefore);
+    });
+  });
+
+  describe("结束拍卖", function () {
+    beforeEach(async function () {
+      const startTime = Math.floor(Date.now() / 1000) - 100;
+      const auctionConfig = {
+        seller: seller.address,
+        nftContract: await mockERC721.getAddress(),
+        tokenId: TOKEN_ID,
+        paymentToken: ethers.ZeroAddress,
+        startPrice: START_PRICE_ETH,
+        usdStartPrice: START_PRICE_USD,
+        startTime: startTime,
+        duration: DURATION,
+        minBidIncrement: MIN_BID_INCREMENT
+      };
+
+      await auction.initialize(auctionConfig);
+      await auction.setPriceFeed(ethers.ZeroAddress, await mockEthPriceFeed.getAddress());
+    });
+
+    it("应该成功结束拍卖并转移资产", async function () {
       // 出价
-      await nftAuction.connect(bidder1).placeBid(0, { value: bidAmount });
-      
+      await auction.connect(bidder1).placeBid(0, { value: START_PRICE_ETH });
+
       // 推进时间到拍卖结束
-      await ethers.provider.send("evm_increaseTime", [61]);
+      await ethers.provider.send("evm_increaseTime", [DURATION + 100]);
       await ethers.provider.send("evm_mine");
-      
-      // 结束拍卖
-      await expect(nftAuction.connect(seller).endAuction())
-        .to.emit(nftAuction, "AuctionEnded")
-        .withArgs(bidder1.address, bidAmount, expect.anything());
-      
-      // 验证NFT转移给获胜者
-      expect(await nftContract.ownerOf(1)).to.equal(bidder1.address);
-      expect(await nftAuction.ended()).to.be.true;
+
+      await expect(auction.connect(seller).endAuction())
+        .to.emit(auction, "AuctionEnded")
+        .withArgs(bidder1.address, START_PRICE_ETH, START_PRICE_USD);
+
+      // 检查 NFT 所有权转移
+      const newOwner = await mockERC721.ownerOf(TOKEN_ID);
+      expect(newOwner).to.equal(bidder1.address);
     });
 
-    it("should return NFT to seller if no bids", async function () {
+    it("无人出价时应取消拍卖", async function () {
       // 推进时间到拍卖结束
-      await ethers.provider.send("evm_increaseTime", [61]);
+      await ethers.provider.send("evm_increaseTime", [DURATION + 100]);
       await ethers.provider.send("evm_mine");
-      
-      // 结束拍卖
-      await expect(nftAuction.connect(seller).endAuction())
-        .to.emit(nftAuction, "AuctionCanceled");
-      
-      // 验证NFT退回给卖家
-      expect(await nftContract.ownerOf(1)).to.equal(seller.address);
-      expect(await nftAuction.ended()).to.be.true;
+
+      await expect(auction.connect(seller).endAuction())
+        .to.emit(auction, "AuctionCanceled");
+
+      // 检查 NFT 退回给卖家
+      const nftOwner = await mockERC721.ownerOf(TOKEN_ID);
+      expect(nftOwner).to.equal(seller.address);
     });
 
-    it("should allow seller to cancel auction before bids", async function () {
-      await expect(nftAuction.connect(seller).cancelAuction())
-        .to.emit(nftAuction, "AuctionCanceled");
-      
-      expect(await nftContract.ownerOf(1)).to.equal(seller.address);
-      expect(await nftAuction.ended()).to.be.true;
+    it("应该拒绝未授权的结束拍卖调用", async function () {
+      await ethers.provider.send("evm_increaseTime", [DURATION + 100]);
+      await ethers.provider.send("evm_mine");
+
+      await expect(auction.connect(bidder1).endAuction())
+        .to.be.revertedWith("Not authorized");
+    });
+  });
+
+  describe("取消拍卖", function () {
+    it("卖家应该能够取消无人出价的拍卖", async function () {
+      const startTime = Math.floor(Date.now() / 1000) + 100;
+      const auctionConfig = {
+        seller: seller.address,
+        nftContract: await mockERC721.getAddress(),
+        tokenId: TOKEN_ID,
+        paymentToken: ethers.ZeroAddress,
+        startPrice: START_PRICE_ETH,
+        usdStartPrice: START_PRICE_USD,
+        startTime: startTime,
+        duration: DURATION,
+        minBidIncrement: MIN_BID_INCREMENT
+      };
+
+      await auction.initialize(auctionConfig);
+
+      await expect(auction.connect(seller).cancelAuction())
+        .to.emit(auction, "AuctionCanceled");
     });
 
-    it("should prevent cancellation after bids placed", async function () {
-      const bidAmount = ethers.parseEther("1.5");
-      
-      await nftAuction.connect(bidder1).placeBid(0, { value: bidAmount });
-      
-      await expect(nftAuction.connect(seller).cancelAuction())
+    it("应该拒绝有出价后取消拍卖", async function () {
+      const startTime = Math.floor(Date.now() / 1000) - 100;
+      const auctionConfig = {
+        seller: seller.address,
+        nftContract: await mockERC721.getAddress(),
+        tokenId: TOKEN_ID,
+        paymentToken: ethers.ZeroAddress,
+        startPrice: START_PRICE_ETH,
+        usdStartPrice: START_PRICE_USD,
+        startTime: startTime,
+        duration: DURATION,
+        minBidIncrement: MIN_BID_INCREMENT
+      };
+
+      await auction.initialize(auctionConfig);
+      await auction.setPriceFeed(ethers.ZeroAddress, await mockEthPriceFeed.getAddress());
+
+      // 出价
+      await auction.connect(bidder1).placeBid(0, { value: START_PRICE_ETH });
+
+      await expect(auction.connect(seller).cancelAuction())
         .to.be.revertedWith("Bids already placed");
     });
   });
 
-  describe("Price Conversion", function () {
-    it("should convert ETH to USD correctly", async function () {
+  describe("价格转换", function () {
+    it("应该正确转换 ETH 到 USD", async function () {
+      await auction.setPriceFeed(ethers.ZeroAddress, await mockEthPriceFeed.getAddress());
+
       const ethAmount = ethers.parseEther("1.0");
-      
-      // 测试价格转换功能
-      const usdAmount = await nftAuction.convertToUSD(ethers.ZeroAddress, ethAmount);
-      
-      // 验证返回了合理的USD值
-      expect(usdAmount).to.be.gt(0);
+      const usdAmount = await auction.convertToUSD(ethers.ZeroAddress, ethAmount);
+
+      expect(usdAmount).to.equal(3000 * 1e8); // 3000 USD
     });
-  });
 
-  describe("Auction Information", function () {
-    it("should return correct auction info", async function () {
-      const tokenId = 1;
-      await nftContract.connect(seller).approve(nftAuction.target, tokenId);
-      
-      const startPrice = ethers.parseEther("1.0");
-      const startTime = Math.floor(Date.now() / 1000) + 60;
-      
-      await nftAuction.initialize(
-        {
-          seller: seller.address,
-          nftContract: nftContract.target,
-          tokenId: tokenId,
-          paymentToken: ethers.ZeroAddress,
-          startPrice: startPrice,
-          usdStartPrice: ethers.parseEther("2000.0"),
-          startTime: startTime,
-          duration: 3600,
-          minBidIncrement: ethers.parseEther("0.1")
-        },
-        owner.address
-      );
+    it("应该正确转换 ERC20 到 USD", async function () {
+      await auction.setPriceFeed(await mockERC20.getAddress(), await mockErc20PriceFeed.getAddress());
 
-      const auctionInfo = await nftAuction.getAuctionInfo();
-      
-      expect(auctionInfo[0]).to.equal(seller.address); // seller
-      expect(auctionInfo[1]).to.equal(nftContract.target); // nftContract
-      expect(auctionInfo[2]).to.equal(tokenId); // tokenId
-      expect(auctionInfo[3]).to.equal(startPrice); // startPrice
-      expect(auctionInfo[5]).to.equal(startTime); // startTime
-      expect(auctionInfo[10]).to.be.false; // ended
+      const tokenAmount = ethers.parseEther("100.0");
+      const usdAmount = await auction.convertToUSD(await mockERC20.getAddress(), tokenAmount);
+
+      expect(usdAmount).to.equal(100 * 1e8); // 100 USD
     });
   });
 });

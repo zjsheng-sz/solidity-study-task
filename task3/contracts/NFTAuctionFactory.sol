@@ -5,6 +5,7 @@ import "./NFTAuction.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
 
 contract NFTAuctionFactory is
     Initializable,
@@ -16,7 +17,7 @@ contract NFTAuctionFactory is
         _disableInitializers();
     }
 
-    function initialize() external initializer {
+    function initialize() public virtual initializer {
         __UUPSUpgradeable_init();
         __Ownable_init(msg.sender);
     }
@@ -84,6 +85,17 @@ contract NFTAuctionFactory is
             minBidIncrement: minBidIncrement
         });
 
+        require(
+            IERC721(nftContract).ownerOf(tokenId) == msg.sender,
+            "Not NFT owner"
+        );
+
+        IERC721(nftContract).transferFrom(
+            msg.sender,
+            address(auction),
+            tokenId
+        );
+
         NFTAuction(auction).initialize(config);
 
         // 记录拍卖信息
@@ -121,6 +133,7 @@ contract NFTAuctionFactory is
     function endExpiredAuctions(address[] calldata auctions) external {
         for (uint256 i = 0; i < auctions.length; i++) {
             NFTAuction auction = NFTAuction(auctions[i]);
+
             try auction.endAuction() {
                 // 拍卖成功结束
             } catch {

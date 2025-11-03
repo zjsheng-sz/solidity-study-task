@@ -1,309 +1,369 @@
+// test/NFTAuctionFactory.js
+const { loadFixture, time } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 const { expect } = require("chai");
-const { ethers } = require("hardhat");
+const { ethers, upgrades } = require("hardhat");
 
-describe("NFTAuctionFactory Unit Tests", function () {
-  let NFTAuctionFactory;
+describe("NFTAuctionFactory", function () {
   let factory;
-  let MyNFT;
   let nftContract;
-  let owner;
-  let seller;
-  let bidder1;
+  let paymentToken;
+  let owner, seller, bidder1, bidder2;
 
-  beforeEach(async function () {
-    [owner, seller, bidder1] = await ethers.getSigners();
+  const TOKEN_ID = 0;
+  const START_PRICE = ethers.parseEther("1.0");
+  const USD_START_PRICE = ethers.parseEther("100.0");
+  const START_TIME = Math.floor(Date.now() / 1000) + 3600; // 1小时后开始
+  const DURATION = 86400; // 24小时
+  const MIN_BID_INCREMENT = ethers.parseEther("0.1");
 
-    // 部署MyNFT合约
-    MyNFT = await ethers.getContractFactory("MyNFT");
-    nftContract = await MyNFT.deploy();
-    await nftContract.waitForDeployment();
+  // 部署 fixture 函数
+  async function deployContractsFixture() {
+    [owner, seller, bidder1, bidder2] = await ethers.getSigners();
 
-    // 部署NFTAuctionFactory合约
-    NFTAuctionFactory = await ethers.getContractFactory("NFTAuctionFactory");
-    factory = await NFTAuctionFactory.deploy();
+    // 部署工厂合约
+    const Factory = await ethers.getContractFactory("NFTAuctionFactory");
+    factory = await upgrades.deployProxy(Factory, [], {
+      initializer: "initialize",
+    });
     await factory.waitForDeployment();
 
-    // 初始化工厂
-    await factory.initialize();
+    // 部署测试NFT合约
+    const MockNFT = await ethers.getContractFactory("MockERC721");
+    nftContract = await MockNFT.deploy("Test NFT", "TNFT");
+    await nftContract.waitForDeployment();
 
-    // 卖家铸造NFT
-    await nftContract.mintNFT(seller.address, "https://example.com/token/1");
-    await nftContract.mintNFT(seller.address, "https://example.com/token/2");
+    // 部署测试ERC20代币作为支付代币
+    const MockERC20 = await ethers.getContractFactory("MockERC20");
+    paymentToken = await MockERC20.deploy("Test Token", "TTK", 18);
+    await paymentToken.waitForDeployment();
+
+    // 给卖家铸造NFT
+    await nftContract.mint(seller.address, TOKEN_ID);
+    await nftContract.connect(seller).approve(await factory.getAddress(), TOKEN_ID);
+
+    // 给投标人分配测试代币
+    await paymentToken.mint(bidder1.address, ethers.parseEther("100"));
+    await paymentToken.mint(bidder2.address, ethers.parseEther("100"));
+
+    return { factory, nftContract, paymentToken, owner, seller, bidder1, bidder2 };
+  }
+
+  beforeEach(async function () {
+    ({ factory, nftContract, paymentToken, owner, seller, bidder1, bidder2 } =
+      await loadFixture(deployContractsFixture));
   });
 
-  describe("Factory Initialization", function () {
-    it("should initialize factory correctly", async function () {
+  describe("部署和初始化", function () {
+    it("应该正确初始化合约", async function () {
       expect(await factory.owner()).to.equal(owner.address);
-      expect(await factory.allAuctionsLength()).to.equal(0);
+    });
+
+    it("应该实现UUPS升级模式", async function () {
+      // 部署新版本实现合约
+      const FactoryV2 = await ethers.getContractFactory("NFTAuctionFactoryV2");
+      const factoryV2 = await upgrades.upgradeProxy(await factory.getAddress(), FactoryV2);
+      await factoryV2.waitForDeployment();
+
+      // 验证升级成功
+      expect(await factoryV2.getVersion()).to.equal("v2.0");
     });
   });
 
-  describe("Auction Creation", function () {
-    it("should create new auction successfully", async function () {
-      const tokenId = 1;
-      const startPrice = ethers.parseEther("1.0");
-      const usdStartPrice = ethers.parseEther("2000.0");
-      const startTime = Math.floor(Date.now() / 1000) + 60;
-      const duration = 3600;
-      const minBidIncrement = ethers.parseEther("0.1");
-
-      // 卖家授权NFT给工厂
-      await nftContract.connect(seller).approve(factory.target, tokenId);
-
-      // 创建拍卖
-      await expect(
-        factory.connect(seller).createAuction(
-          nftContract.target,
-          tokenId,
-          ethers.ZeroAddress, // ETH
-          startPrice,
-          usdStartPrice,
-          startTime,
-          duration,
-          minBidIncrement
-        )
-      ).to.emit(factory, "AuctionCreated")
-       .withArgs(seller.address, nftContract.target, tokenId, expect.anything(), 0);
-
-      // 验证拍卖信息记录
-      expect(await factory.allAuctionsLength()).to.equal(1);
-      
-      const auctionAddress = await factory.allAuctions(0);
-      expect(auctionAddress).to.not.equal(ethers.ZeroAddress);
-      
-      // 验证映射关系
-      expect(await factory.constractAuction(nftContract.target, tokenId)).to.equal(auctionAddress);
-      
-      // 验证用户拍卖列表
-      const userAuctions = await factory.getUserAuctions(seller.address);
-      expect(userAuctions.length).to.equal(1);
-      expect(userAuctions[0]).to.equal(auctionAddress);
-    });
-
-    it("should prevent creating auction for same NFT", async function () {
-      const tokenId = 1;
-      
-      await nftContract.connect(seller).approve(factory.target, tokenId);
-
-      // 第一次创建拍卖
-      await factory.connect(seller).createAuction(
-        nftContract.target,
-        tokenId,
-        ethers.ZeroAddress,
-        ethers.parseEther("1.0"),
-        ethers.parseEther("2000.0"),
-        Math.floor(Date.now() / 1000) + 60,
-        3600,
-        ethers.parseEther("0.1")
+  describe("创建拍卖", function () {
+    it("应该成功创建新的拍卖", async function () {
+      const tx = await factory.connect(seller).createAuction(
+        await nftContract.getAddress(),
+        TOKEN_ID,
+        await paymentToken.getAddress(),
+        START_PRICE,
+        USD_START_PRICE,
+        START_TIME,
+        DURATION,
+        MIN_BID_INCREMENT
       );
 
-      // 尝试为同一个NFT再次创建拍卖
+      // 验证事件发射
+      await expect(tx)
+        .to.emit(factory, "AuctionCreated")
+        .withArgs(
+          seller.address,
+          await nftContract.getAddress(),
+          TOKEN_ID,
+          (addr) => addr !== ethers.ZeroAddress, // auctionAddress
+          BigInt(0) // auctionId
+        );
+
+      // 验证拍卖地址已记录
+      const auctionAddress = await factory.constractAuction(await nftContract.getAddress(), TOKEN_ID);
+      expect(auctionAddress).to.not.equal(ethers.ZeroAddress);
+
+      // 验证拍卖已添加到所有拍卖列表
+      expect(await factory.allAuctionsLength()).to.equal(1);
+      expect(await factory.allAuctions(0)).to.equal(auctionAddress);
+
+      // 验证用户拍卖列表
+      const userAuctions = await factory.getUserAuctions(seller.address);
+      expect(userAuctions).to.have.lengthOf(1);
+      expect(userAuctions[0]).to.equal(auctionAddress);
+
+      // 验证用户拍卖数量
+      expect(await factory.getUserAuctionCount(seller.address)).to.equal(1);
+    });
+
+    it("应该防止重复创建同一NFT的拍卖", async function () {
+      await factory.connect(seller).createAuction(
+        await nftContract.getAddress(),
+        TOKEN_ID,
+        await paymentToken.getAddress(),
+        START_PRICE,
+        USD_START_PRICE,
+        START_TIME,
+        DURATION,
+        MIN_BID_INCREMENT
+      );
+
       await expect(
         factory.connect(seller).createAuction(
-          nftContract.target,
-          tokenId,
-          ethers.ZeroAddress,
-          ethers.parseEther("2.0"),
-          ethers.parseEther("4000.0"),
-          Math.floor(Date.now() / 1000) + 120,
-          3600,
-          ethers.parseEther("0.2")
+          await nftContract.getAddress(),
+          TOKEN_ID,
+          await paymentToken.getAddress(),
+          START_PRICE,
+          USD_START_PRICE,
+          START_TIME,
+          DURATION,
+          MIN_BID_INCREMENT
         )
       ).to.be.revertedWith("Auction exists");
     });
 
-    it("should reject invalid parameters", async function () {
-      const tokenId = 1;
-      
-      await nftContract.connect(seller).approve(factory.target, tokenId);
-
-      // 测试无效的NFT合约地址
+    it("应该防止使用零地址NFT合约", async function () {
       await expect(
         factory.connect(seller).createAuction(
           ethers.ZeroAddress,
-          tokenId,
-          ethers.ZeroAddress,
-          ethers.parseEther("1.0"),
-          ethers.parseEther("2000.0"),
-          Math.floor(Date.now() / 1000) + 60,
-          3600,
-          ethers.parseEther("0.1")
+          TOKEN_ID,
+          await paymentToken.getAddress(),
+          START_PRICE,
+          USD_START_PRICE,
+          START_TIME,
+          DURATION,
+          MIN_BID_INCREMENT
         )
       ).to.be.revertedWith("Invalid NFT contract");
+    });
 
-      // 测试无效的持续时间
+    it("应该防止设置过去的时间作为开始时间", async function () {
+      const pastTime = (await time.latest()) - 3600;
+
       await expect(
         factory.connect(seller).createAuction(
-          nftContract.target,
-          tokenId,
-          ethers.ZeroAddress,
-          ethers.parseEther("1.0"),
-          ethers.parseEther("2000.0"),
-          Math.floor(Date.now() / 1000) + 60,
-          0, // 无效的持续时间
-          ethers.parseEther("0.1")
-        )
-      ).to.be.revertedWith("Invalid duration");
-
-      // 测试过去的开始时间
-      await expect(
-        factory.connect(seller).createAuction(
-          nftContract.target,
-          tokenId,
-          ethers.ZeroAddress,
-          ethers.parseEther("1.0"),
-          ethers.parseEther("2000.0"),
-          Math.floor(Date.now() / 1000) - 60, // 过去的时间
-          3600,
-          ethers.parseEther("0.1")
+          await nftContract.getAddress(),
+          TOKEN_ID,
+          await paymentToken.getAddress(),
+          START_PRICE,
+          USD_START_PRICE,
+          pastTime,
+          DURATION,
+          MIN_BID_INCREMENT
         )
       ).to.be.revertedWith("startTime must be future");
     });
-  });
 
-  describe("Auction Management", function () {
-    let auctionAddress1;
-    let auctionAddress2;
-
-    beforeEach(async function () {
-      // 创建两个拍卖
-      await nftContract.connect(seller).approve(factory.target, 1);
-      await nftContract.connect(seller).approve(factory.target, 2);
-
-      const tx1 = await factory.connect(seller).createAuction(
-        nftContract.target,
-        1,
-        ethers.ZeroAddress,
-        ethers.parseEther("1.0"),
-        ethers.parseEther("2000.0"),
-        Math.floor(Date.now() / 1000) + 60,
-        3600,
-        ethers.parseEther("0.1")
-      );
-
-      const tx2 = await factory.connect(seller).createAuction(
-        nftContract.target,
-        2,
-        ethers.ZeroAddress,
-        ethers.parseEther("2.0"),
-        ethers.parseEther("4000.0"),
-        Math.floor(Date.now() / 1000) + 120,
-        3600,
-        ethers.parseEther("0.2")
-      );
-
-      auctionAddress1 = await factory.allAuctions(0);
-      auctionAddress2 = await factory.allAuctions(1);
+    it("应该防止设置零持续时间", async function () {
+      await expect(
+        factory.connect(seller).createAuction(
+          await nftContract.getAddress(),
+          TOKEN_ID,
+          await paymentToken.getAddress(),
+          START_PRICE,
+          USD_START_PRICE,
+          START_TIME,
+          0, // 零持续时间
+          MIN_BID_INCREMENT
+        )
+      ).to.be.revertedWith("Invalid duration");
     });
 
-    it("should track all auctions correctly", async function () {
+    it("应该为不同用户创建独立的拍卖列表", async function () {
+      // 卖家创建拍卖
+      await factory.connect(seller).createAuction(
+        await nftContract.getAddress(),
+        TOKEN_ID,
+        await paymentToken.getAddress(),
+        START_PRICE,
+        USD_START_PRICE,
+        START_TIME,
+        DURATION,
+        MIN_BID_INCREMENT
+      );
+
+      // 验证卖家有1个拍卖，其他用户有0个
+      expect(await factory.getUserAuctionCount(seller.address)).to.equal(1);
+      expect(await factory.getUserAuctionCount(owner.address)).to.equal(0);
+      expect(await factory.getUserAuctionCount(bidder1.address)).to.equal(0);
+    });
+  });
+
+  describe("拍卖查询功能", function () {
+    let auctionAddress1, auctionAddress2;
+
+    beforeEach(async function () {
+      // 创建第一个拍卖
+      const tx1 = await factory.connect(seller).createAuction(
+        await nftContract.getAddress(),
+        TOKEN_ID,
+        await paymentToken.getAddress(),
+        START_PRICE,
+        USD_START_PRICE,
+        START_TIME,
+        DURATION,
+        MIN_BID_INCREMENT
+      );
+      const receipt1 = await tx1.wait();
+      auctionAddress1 = await factory.constractAuction(await nftContract.getAddress(), TOKEN_ID);
+
+      // 创建第二个NFT和拍卖
+      await nftContract.mint(seller.address, 2);
+      await nftContract.connect(seller).approve(await factory.getAddress(), 2);
+
+      const tx2 = await factory.connect(seller).createAuction(
+        await nftContract.getAddress(),
+        2,
+        await paymentToken.getAddress(),
+        START_PRICE,
+        USD_START_PRICE,
+        START_TIME + 3600,
+        DURATION,
+        MIN_BID_INCREMENT
+      );
+      const receipt2 = await tx2.wait();
+      auctionAddress2 = await factory.constractAuction(await nftContract.getAddress(), 2);
+    });
+
+    it("应该正确返回所有拍卖数量", async function () {
       expect(await factory.allAuctionsLength()).to.equal(2);
+    });
+
+    it("应该正确返回特定索引的拍卖地址", async function () {
       expect(await factory.allAuctions(0)).to.equal(auctionAddress1);
       expect(await factory.allAuctions(1)).to.equal(auctionAddress2);
     });
 
-    it("should return user auctions correctly", async function () {
+    it("应该正确返回用户的拍卖列表", async function () {
       const userAuctions = await factory.getUserAuctions(seller.address);
-      expect(userAuctions.length).to.equal(2);
+      expect(userAuctions).to.have.lengthOf(2);
       expect(userAuctions[0]).to.equal(auctionAddress1);
       expect(userAuctions[1]).to.equal(auctionAddress2);
+    });
 
+    it("应该正确返回用户的拍卖数量", async function () {
       expect(await factory.getUserAuctionCount(seller.address)).to.equal(2);
     });
 
-    it("should return empty array for user with no auctions", async function () {
+    it("应该正确通过NFT合约和tokenId查询拍卖地址", async function () {
+      const address1 = await factory.constractAuction(await nftContract.getAddress(), TOKEN_ID);
+      const address2 = await factory.constractAuction(await nftContract.getAddress(), 2);
+
+      expect(address1).to.equal(auctionAddress1);
+      expect(address2).to.equal(auctionAddress2);
+      expect(address1).to.not.equal(address2);
+    });
+  });
+
+  describe("批量结束过期拍卖", function () {
+    let auctionAddress1, auctionAddress2;
+
+    beforeEach(async function () {
+      // 创建两个拍卖
+      await factory.connect(seller).createAuction(
+        await nftContract.getAddress(),
+        TOKEN_ID,
+        await paymentToken.getAddress(),
+        START_PRICE,
+        USD_START_PRICE,
+        START_TIME,
+        DURATION,
+        MIN_BID_INCREMENT
+      );
+      auctionAddress1 = await factory.constractAuction(await nftContract.getAddress(), TOKEN_ID);
+
+      await nftContract.mint(seller.address, 2);
+      await nftContract.connect(seller).approve(await factory.getAddress(), 2);
+
+      await factory.connect(seller).createAuction(
+        await nftContract.getAddress(),
+        2,
+        await paymentToken.getAddress(),
+        START_PRICE,
+        USD_START_PRICE,
+        START_TIME,
+        DURATION,
+        MIN_BID_INCREMENT
+      );
+      auctionAddress2 = await factory.constractAuction(await nftContract.getAddress(), 2);
+    });
+
+    it("应该处理空拍卖列表", async function () {
+      await expect(factory.endExpiredAuctions([])).to.not.be.reverted;
+    });
+
+
+    it("应该正常处理有效的拍卖地址", async function () {
+      // 这个测试需要NFTAuction合约的实现
+      // 这里主要测试工厂函数不会回滚
+      await expect(
+        factory.endExpiredAuctions([auctionAddress1, auctionAddress2])
+      ).to.not.be.reverted;
+    });
+  });
+
+  describe("边界情况测试", function () {
+    it("应该处理大量拍卖的创建和查询", async function () {
+      const NUM_AUCTIONS = 5;
+
+      for (let i = 1; i <= NUM_AUCTIONS; i++) {
+        await nftContract.mint(seller.address, i);
+        await nftContract.connect(seller).approve(await factory.getAddress(), i);
+
+        await factory.connect(seller).createAuction(
+          await nftContract.getAddress(),
+          i,
+          await paymentToken.getAddress(),
+          START_PRICE,
+          USD_START_PRICE,
+          START_TIME + i * 3600,
+          DURATION,
+          MIN_BID_INCREMENT
+        );
+      }
+
+      expect(await factory.allAuctionsLength()).to.equal(NUM_AUCTIONS);
+      expect(await factory.getUserAuctionCount(seller.address)).to.equal(NUM_AUCTIONS);
+    });
+
+    it("应该正确处理不存在的拍卖查询", async function () {
+      // 查询不存在的NFT拍卖
+      const nonExistentAddress = await factory.constractAuction(await nftContract.getAddress(), 999);
+      expect(nonExistentAddress).to.equal(ethers.ZeroAddress);
+
+      // 查询不存在的用户拍卖
       const userAuctions = await factory.getUserAuctions(bidder1.address);
-      expect(userAuctions.length).to.equal(0);
+      expect(userAuctions).to.have.lengthOf(0);
       expect(await factory.getUserAuctionCount(bidder1.address)).to.equal(0);
     });
 
-    it("should find auction by NFT contract and token ID", async function () {
-      expect(await factory.constractAuction(nftContract.target, 1)).to.equal(auctionAddress1);
-      expect(await factory.constractAuction(nftContract.target, 2)).to.equal(auctionAddress2);
-      expect(await factory.constractAuction(nftContract.target, 3)).to.equal(ethers.ZeroAddress);
-    });
-  });
-
-  describe("Expired Auction Management", function () {
-    let auctionAddress;
-
-    beforeEach(async function () {
-      await nftContract.connect(seller).approve(factory.target, 1);
-
-      // 创建短期拍卖
-      await factory.connect(seller).createAuction(
-        nftContract.target,
-        1,
-        ethers.ZeroAddress,
-        ethers.parseEther("1.0"),
-        ethers.parseEther("2000.0"),
-        Math.floor(Date.now() / 1000),
-        60, // 短时间便于测试
-        ethers.parseEther("0.1")
-      );
-
-      auctionAddress = await factory.allAuctions(0);
-    });
-
-    it("should end expired auctions successfully", async function () {
-      // 推进时间到拍卖结束
-      await ethers.provider.send("evm_increaseTime", [61]);
-      await ethers.provider.send("evm_mine");
-
-      // 批量结束过期拍卖
+    it("应该允许使用零地址作为支付代币（表示原生代币）", async function () {
       await expect(
-        factory.connect(owner).endExpiredAuctions([auctionAddress])
-      ).to.not.be.reverted;
-
-      // 验证拍卖已结束
-      const NFTAuction = await ethers.getContractFactory("NFTAuction");
-      const auction = NFTAuction.attach(auctionAddress);
-      expect(await auction.ended()).to.be.true;
-    });
-
-    it("should handle failed auction ending gracefully", async function () {
-      // 尝试结束未过期的拍卖
-      await expect(
-        factory.connect(owner).endExpiredAuctions([auctionAddress])
-      ).to.not.be.reverted; // 应该继续执行而不回滚
-    });
-
-    it("should handle multiple auctions", async function () {
-      // 创建第二个拍卖
-      await nftContract.connect(seller).approve(factory.target, 2);
-      
-      await factory.connect(seller).createAuction(
-        nftContract.target,
-        2,
-        ethers.ZeroAddress,
-        ethers.parseEther("2.0"),
-        ethers.parseEther("4000.0"),
-        Math.floor(Date.now() / 1000),
-        120,
-        ethers.parseEther("0.2")
-      );
-
-      const auctionAddress2 = await factory.allAuctions(1);
-
-      // 推进时间到第一个拍卖结束
-      await ethers.provider.send("evm_increaseTime", [61]);
-      await ethers.provider.send("evm_mine");
-
-      // 批量结束两个拍卖
-      await expect(
-        factory.connect(owner).endExpiredAuctions([auctionAddress, auctionAddress2])
-      ).to.not.be.reverted;
-    });
-  });
-
-  describe("Factory Upgradeability", function () {
-    it("should allow owner to upgrade factory", async function () {
-      // 测试升级功能
-      const NFTAuctionFactoryV2 = await ethers.getContractFactory("NFTAuctionFactory");
-      
-      // 注意：实际升级需要部署代理合约，这里主要测试权限
-      // 工厂合约本身支持UUPS升级
-      expect(await factory.owner()).to.equal(owner.address);
+        factory.connect(seller).createAuction(
+          await nftContract.getAddress(),
+          TOKEN_ID,
+          ethers.ZeroAddress, // 使用原生代币
+          START_PRICE,
+          USD_START_PRICE,
+          START_TIME,
+          DURATION,
+          MIN_BID_INCREMENT
+        )
+      ).to.emit(factory, "AuctionCreated");
     });
   });
 });

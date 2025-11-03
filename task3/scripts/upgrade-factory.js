@@ -19,20 +19,24 @@ async function main() {
   console.log("Upgrading factory at address:", factoryAddress);
 
   // 获取新的合约工厂
-  const NFTAuctionFactoryV2 = await ethers.getContractFactory("NFTAuctionFactory");
-  
+  const NFTAuctionFactoryV2 = await ethers.getContractFactory("NFTAuctionFactoryV2");
+
   // 执行升级
   const factory = await upgrades.upgradeProxy(factoryAddress, NFTAuctionFactoryV2);
-  console.log("Factory upgraded successfully");
+  await factory.waitForDeployment();
+  const versionFromVariable = await factory.getVersion();
+  console.log("version variable result:", versionFromVariable);
+
 
   // 获取新的实现地址
   const newImplementationAddress = await upgrades.erc1967.getImplementationAddress(factoryAddress);
   console.log("New implementation address:", newImplementationAddress);
 
+
   // 更新部署信息
   deploymentInfo.factoryImplementation = newImplementationAddress;
   deploymentInfo.upgradedAt = new Date().toISOString();
-  
+
   fs.writeFileSync('deployment-upgradeable.json', JSON.stringify(deploymentInfo, null, 2));
   console.log("Deployment info updated");
 }

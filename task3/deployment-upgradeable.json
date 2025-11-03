@@ -1,7 +1,8 @@
 {
-  "myNFT": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
-  "factory": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
-  "factoryImplementation": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+  "myNFT": "0x2bdCC0de6bE1f7D2ee689a0342D76F52E8EFABa3",
+  "factory": "0x7969c5eD335650692Bc04293B07F5BF2e7A673C0",
+  "factoryImplementation": "0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf",
   "network": "localhost",
-  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "upgradedAt": "2025-11-02T10:41:41.401Z"
 }
