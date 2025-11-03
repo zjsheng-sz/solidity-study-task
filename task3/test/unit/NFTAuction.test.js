@@ -114,6 +114,7 @@ describe("NFTAuction", function () {
   describe("ETH 拍卖", function () {
     beforeEach(async function () {
       const startTime = Math.floor(Date.now() / 1000) - 100; // 已开始
+
       const auctionConfig = {
         seller: seller.address,
         nftContract: await mockERC721.getAddress(),

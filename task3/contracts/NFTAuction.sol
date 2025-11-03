@@ -13,8 +13,8 @@ contract NFTAuction is ReentrancyGuard {
 
     // Chainlink 价格喂价合约地址 (主网)
     // address private constant ETH_USD_FEED =0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419;
-    address private constant ETH_USD_FEED =
-        0x694AA1769357215DE4FAC081bf1f309aDC325306; //Sepolia
+    // address private constant ETH_USD_FEED =
+    //     0x694AA1769357215DE4FAC081bf1f309aDC325306; //Sepolia
     mapping(address => address) public erc20UsdPriceFeeds; // ERC20 => 价格预言机映射
 
     struct AuctionConfig {
@@ -225,7 +225,7 @@ contract NFTAuction is ReentrancyGuard {
 
     // 获取最新ETH价格
     function getEthPrice() public view returns (int256) {
-        AggregatorV3Interface priceFeed = AggregatorV3Interface(ETH_USD_FEED);
+        AggregatorV3Interface priceFeed = AggregatorV3Interface( erc20UsdPriceFeeds[address(0)]);
         (, int256 price, , , ) = priceFeed.latestRoundData();
         return price;
     }
