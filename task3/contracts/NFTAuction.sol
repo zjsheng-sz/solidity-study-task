@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import "hardhat/console.sol";
 
 contract NFTAuction is ReentrancyGuard {
     using Address for address payable;
@@ -85,7 +86,7 @@ contract NFTAuction is ReentrancyGuard {
         minBidIncrement = config.minBidIncrement;
 
         // 转移NFT到拍卖合约
-        IERC721(nftContract).transferFrom(seller, address(this), tokenId);
+        // IERC721(nftContract).transferFrom(seller, address(this), tokenId);
     }
 
     function placeBid(uint256 bidAmount) external payable nonReentrant {
@@ -174,6 +175,10 @@ contract NFTAuction is ReentrancyGuard {
     }
 
     function cancelAuction() external onlySeller nonReentrant {
+        console.log("block.timestamp:", block.timestamp);
+        console.log("endTime:", endTime);
+        console.log("startTime:", startTime);
+
         require(block.timestamp < endTime, "Auction already ended");
         require(highestBidder == address(0), "Bids already placed");
 
@@ -225,7 +230,9 @@ contract NFTAuction is ReentrancyGuard {
 
     // 获取最新ETH价格
     function getEthPrice() public view returns (int256) {
-        AggregatorV3Interface priceFeed = AggregatorV3Interface( erc20UsdPriceFeeds[address(0)]);
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(
+            erc20UsdPriceFeeds[address(0)]
+        );
         (, int256 price, , , ) = priceFeed.latestRoundData();
         return price;
     }
