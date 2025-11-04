@@ -6,7 +6,6 @@
   "scripts": {
     "test": "npx hardhat test",
     "test:unit": "npx hardhat test test/unit/*.test.js",
-    "test:integration": "npx hardhat test test/integration/*.test.js",
     "test:coverage": "npx hardhat coverage",
     "deploy": "npx hardhat run scripts/deploy.js --network localhost",
     "deploy-upgradeable": "npx hardhat run scripts/deploy-upgradeable.js --network localhost",
