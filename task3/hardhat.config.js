@@ -5,6 +5,10 @@ require("hardhat-contract-sizer"); // 添加这行
 
 // 从 .env 文件读取敏感信息
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const Account2 = process.env.Account2;
+const Account3 = process.env.Account2;
+const Account4 = process.env.Account2;
+
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
@@ -28,7 +32,7 @@ module.exports = {
     // Sepolia 测试网
     sepolia: {
       url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      accounts: [PRIVATE_KEY], // 用于部署的私钥
+      accounts: [PRIVATE_KEY,Account2,Account3,Account4], // 用于部署的私钥
       chainId: 11155111,
     },
     // 主网（谨慎操作！）

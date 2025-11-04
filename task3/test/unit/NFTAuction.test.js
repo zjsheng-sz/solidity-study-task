@@ -7,7 +7,7 @@ describe("NFTAuction", function () {
   let MockERC20, mockERC20;
   let MockPriceFeed, mockEthPriceFeed, mockErc20PriceFeed;
 
-  let owner, seller, bidder1, bidder2, factory;
+  let owner, seller, bidder1, bidder2;
 
   // 测试常量
   const TOKEN_ID = 1;
@@ -22,7 +22,7 @@ describe("NFTAuction", function () {
 
 
   beforeEach(async function () {
-    [owner, seller, bidder1, bidder2, factory] = await ethers.getSigners();
+    [owner, seller, bidder1, bidder2] = await ethers.getSigners();
 
     // 部署 Mock ERC721
     MockERC721 = await ethers.getContractFactory("MockERC721");
