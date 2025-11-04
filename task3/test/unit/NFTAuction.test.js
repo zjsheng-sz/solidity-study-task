@@ -11,12 +11,12 @@ describe("NFTAuction", function () {
 
   // 测试常量
   const TOKEN_ID = 1;
-  const START_PRICE_ETH = ethers.parseEther("1.0");
-  const START_PRICE_ERC20 = ethers.parseEther("3.0");
-  const START_PRICE_USD = 3000 * 1e8; // 3000 USD (8 decimals)
+  const START_PRICE_ETH = ethers.parseEther("0.01");
+  const START_PRICE_ERC20 = ethers.parseEther("0.03");
+  const START_PRICE_USD = 30 * 1e8; // 3000 USD (8 decimals)
   const DURATION = 3600; // 1小时
-  const MIN_BID_INCREMENT = ethers.parseEther("0.1");
-  const MIN_BID_INCREMENT_ERC20 = ethers.parseEther("0.3");
+  const MIN_BID_INCREMENT = ethers.parseEther("0.001");
+  const MIN_BID_INCREMENT_ERC20 = ethers.parseEther("0.003");
 
   let snapshotId;
 
@@ -162,7 +162,7 @@ describe("NFTAuction", function () {
     });
 
     it("应该拒绝低于起拍价的出价", async function () {
-      const lowBid = START_PRICE_ETH - ethers.parseEther("0.1");
+      const lowBid = START_PRICE_ETH - MIN_BID_INCREMENT;
 
       await expect(auction.connect(bidder1).placeBid(0, { value: lowBid }))
         .to.be.revertedWith("Bid below start price");
@@ -173,7 +173,7 @@ describe("NFTAuction", function () {
       await auction.connect(bidder1).placeBid(0, { value: START_PRICE_ETH });
 
       // 第二个出价不够
-      const lowBid = START_PRICE_ETH + MIN_BID_INCREMENT - ethers.parseEther("0.01");
+      const lowBid = START_PRICE_ETH + MIN_BID_INCREMENT - ethers.parseEther("0.0001");
 
       await expect(auction.connect(bidder2).placeBid(0, { value: lowBid }))
         .to.be.revertedWith("Bid too low");

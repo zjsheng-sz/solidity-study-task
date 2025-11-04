@@ -10,11 +10,11 @@ describe("NFTAuctionFactory", function () {
   let owner, seller, bidder1, bidder2;
 
   const TOKEN_ID = 0;
-  const START_PRICE = ethers.parseEther("1.0");
-  const USD_START_PRICE = ethers.parseEther("100.0");
+  const START_PRICE = ethers.parseEther("0.01");
+  const USD_START_PRICE = ethers.parseEther("30.0");
   const START_TIME = Math.floor(Date.now() / 1000) + 3600; // 1小时后开始
   const DURATION = 86400; // 24小时
-  const MIN_BID_INCREMENT = ethers.parseEther("0.1");
+  const MIN_BID_INCREMENT = ethers.parseEther("0.001");
 
   // 部署 fixture 函数
   async function deployContractsFixture() {

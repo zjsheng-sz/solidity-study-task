@@ -95,6 +95,8 @@ contract NFTAuction is ReentrancyGuard {
         require(!ended, "Auction already ended");
 
         uint256 actualBid = paymentToken == address(0) ? msg.value : bidAmount;
+        console.log("actualBid: ", actualBid);
+        console.log("startPrice: ", startPrice);
         require(actualBid >= startPrice, "Bid below start price");
         require(actualBid >= highestBid + minBidIncrement, "Bid too low");
 
