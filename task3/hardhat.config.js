@@ -58,4 +58,19 @@ module.exports = {
     apiKey: ETHERSCAN_API_KEY, // 用于合约验证的 Etherscan API 密钥
   },
 
+
+  // 可选的覆盖率配置
+  coverage: {
+    // 覆盖率报告输出目录
+    reportsDirectory: "coverage",
+    // 排除的文件或目录
+    exclude: ["test/", "node_modules/", "coverage/, contracts/mock/"],
+    // 包含的文件模式
+    include: ["contracts/**"],
+    // 生成报告类型
+    reporter: ["html", "lcov", "text"],
+    // 是否在运行测试时显示覆盖率
+    showTestLogs: true
+  }
+
 };  

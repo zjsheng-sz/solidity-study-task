@@ -1,0 +1,2984 @@
+{
+    "contracts/mock/MockERC20.sol": {
+        "l": {
+            "15": 15,
+            "19": 3,
+            "23": 30
+        },
+        "path": "/Users/zhong/solidity_study/solidity-study-task/task3/contracts/mock/MockERC20.sol",
+        "s": {
+            "1": 3,
+            "2": 30
+        },
+        "b": {},
+        "f": {
+            "1": 15,
+            "2": 3,
+            "3": 30
+        },
+        "fnMap": {
+            "1": {
+                "name": "constructor",
+                "line": 14,
+                "loc": {
+                    "start": {
+                        "line": 10,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 16,
+                        "column": 4
+                    }
+                }
+            },
+            "2": {
+                "name": "decimals",
+                "line": 18,
+                "loc": {
+                    "start": {
+                        "line": 18,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 20,
+                        "column": 4
+                    }
+                }
+            },
+            "3": {
+                "name": "mint",
+                "line": 22,
+                "loc": {
+                    "start": {
+                        "line": 22,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 24,
+                        "column": 4
+                    }
+                }
+            }
+        },
+        "statementMap": {
+            "1": {
+                "start": {
+                    "line": 19,
+                    "column": 8
+                },
+                "end": {
+                    "line": 19,
+                    "column": 24
+                }
+            },
+            "2": {
+                "start": {
+                    "line": 23,
+                    "column": 8
+                },
+                "end": {
+                    "line": 23,
+                    "column": 24
+                }
+            }
+        },
+        "branchMap": {}
+    },
+    "contracts/mock/MockERC721.sol": {
+        "l": {
+            "11": 15,
+            "15": 27,
+            "16": 27,
+            "20": 0
+        },
+        "path": "/Users/zhong/solidity_study/solidity-study-task/task3/contracts/mock/MockERC721.sol",
+        "s": {
+            "1": 27,
+            "2": 0
+        },
+        "b": {},
+        "f": {
+            "1": 15,
+            "2": 27,
+            "3": 0
+        },
+        "fnMap": {
+            "1": {
+                "name": "constructor",
+                "line": 10,
+                "loc": {
+                    "start": {
+                        "line": 10,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 12,
+                        "column": 4
+                    }
+                }
+            },
+            "2": {
+                "name": "mint",
+                "line": 14,
+                "loc": {
+                    "start": {
+                        "line": 14,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 17,
+                        "column": 4
+                    }
+                }
+            },
+            "3": {
+                "name": "baseURI",
+                "line": 19,
+                "loc": {
+                    "start": {
+                        "line": 19,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 21,
+                        "column": 4
+                    }
+                }
+            }
+        },
+        "statementMap": {
+            "1": {
+                "start": {
+                    "line": 15,
+                    "column": 8
+                },
+                "end": {
+                    "line": 15,
+                    "column": 25
+                }
+            },
+            "2": {
+                "start": {
+                    "line": 20,
+                    "column": 8
+                },
+                "end": {
+                    "line": 20,
+                    "column": 43
+                }
+            }
+        },
+        "branchMap": {}
+    },
+    "contracts/mock/MockPriceFeed.sol": {
+        "l": {
+            "10": 28,
+            "14": 0,
+            "18": 0,
+            "22": 0,
+            "28": 0,
+            "36": 11,
+            "40": 0
+        },
+        "path": "/Users/zhong/solidity_study/solidity-study-task/task3/contracts/mock/MockPriceFeed.sol",
+        "s": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 11
+        },
+        "b": {},
+        "f": {
+            "1": 28,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 11,
+            "7": 0
+        },
+        "fnMap": {
+            "1": {
+                "name": "constructor",
+                "line": 9,
+                "loc": {
+                    "start": {
+                        "line": 9,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 11,
+                        "column": 4
+                    }
+                }
+            },
+            "2": {
+                "name": "decimals",
+                "line": 13,
+                "loc": {
+                    "start": {
+                        "line": 13,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 15,
+                        "column": 4
+                    }
+                }
+            },
+            "3": {
+                "name": "description",
+                "line": 17,
+                "loc": {
+                    "start": {
+                        "line": 17,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 19,
+                        "column": 4
+                    }
+                }
+            },
+            "4": {
+                "name": "version",
+                "line": 21,
+                "loc": {
+                    "start": {
+                        "line": 21,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 23,
+                        "column": 4
+                    }
+                }
+            },
+            "5": {
+                "name": "getRoundData",
+                "line": 25,
+                "loc": {
+                    "start": {
+                        "line": 25,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 29,
+                        "column": 4
+                    }
+                }
+            },
+            "6": {
+                "name": "latestRoundData",
+                "line": 31,
+                "loc": {
+                    "start": {
+                        "line": 31,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 37,
+                        "column": 4
+                    }
+                }
+            },
+            "7": {
+                "name": "setPrice",
+                "line": 39,
+                "loc": {
+                    "start": {
+                        "line": 39,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 41,
+                        "column": 4
+                    }
+                }
+            }
+        },
+        "statementMap": {
+            "1": {
+                "start": {
+                    "line": 14,
+                    "column": 8
+                },
+                "end": {
+                    "line": 14,
+                    "column": 16
+                }
+            },
+            "2": {
+                "start": {
+                    "line": 18,
+                    "column": 8
+                },
+                "end": {
+                    "line": 18,
+                    "column": 32
+                }
+            },
+            "3": {
+                "start": {
+                    "line": 22,
+                    "column": 8
+                },
+                "end": {
+                    "line": 22,
+                    "column": 16
+                }
+            },
+            "4": {
+                "start": {
+                    "line": 28,
+                    "column": 8
+                },
+                "end": {
+                    "line": 28,
+                    "column": 32
+                }
+            },
+            "5": {
+                "start": {
+                    "line": 36,
+                    "column": 8
+                },
+                "end": {
+                    "line": 36,
+                    "column": 35
+                }
+            }
+        },
+        "branchMap": {}
+    },
+    "contracts/mock/MyNFT.sol": {
+        "l": {
+            "11": 0,
+            "15": 0,
+            "16": 0,
+            "17": 0,
+            "18": 0,
+            "19": 0
+        },
+        "path": "/Users/zhong/solidity_study/solidity-study-task/task3/contracts/mock/MyNFT.sol",
+        "s": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0
+        },
+        "b": {},
+        "f": {
+            "1": 0,
+            "2": 0
+        },
+        "fnMap": {
+            "1": {
+                "name": "constructor",
+                "line": 10,
+                "loc": {
+                    "start": {
+                        "line": 10,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 12,
+                        "column": 4
+                    }
+                }
+            },
+            "2": {
+                "name": "mintNFT",
+                "line": 14,
+                "loc": {
+                    "start": {
+                        "line": 14,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 20,
+                        "column": 4
+                    }
+                }
+            }
+        },
+        "statementMap": {
+            "1": {
+                "start": {
+                    "line": 16,
+                    "column": 8
+                },
+                "end": {
+                    "line": 16,
+                    "column": 43
+                }
+            },
+            "2": {
+                "start": {
+                    "line": 17,
+                    "column": 8
+                },
+                "end": {
+                    "line": 17,
+                    "column": 34
+                }
+            },
+            "3": {
+                "start": {
+                    "line": 18,
+                    "column": 8
+                },
+                "end": {
+                    "line": 18,
+                    "column": 40
+                }
+            },
+            "4": {
+                "start": {
+                    "line": 19,
+                    "column": 8
+                },
+                "end": {
+                    "line": 19,
+                    "column": 24
+                }
+            }
+        },
+        "branchMap": {}
+    },
+    "contracts/NFTAuction.sol": {
+        "l": {
+            "59": 13,
+            "60": 13,
+            "64": 38,
+            "65": 38,
+            "71": 37,
+            "76": 38,
+            "78": 37,
+            "79": 37,
+            "80": 37,
+            "81": 37,
+            "82": 37,
+            "83": 37,
+            "84": 37,
+            "85": 37,
+            "86": 37,
+            "93": 13,
+            "94": 13,
+            "95": 13,
+            "97": 13,
+            "98": 13,
+            "99": 13,
+            "100": 13,
+            "101": 12,
+            "103": 11,
+            "104": 11,
+            "108": 11,
+            "111": 11,
+            "112": 8,
+            "114": 8,
+            "115": 2,
+            "118": 3,
+            "119": 3,
+            "125": 3,
+            "126": 1,
+            "130": 11,
+            "131": 11,
+            "132": 11,
+            "135": 11,
+            "136": 1,
+            "139": 11,
+            "143": 5,
+            "144": 3,
+            "145": 3,
+            "150": 2,
+            "152": 2,
+            "154": 1,
+            "161": 1,
+            "162": 1,
+            "164": 0,
+            "167": 1,
+            "170": 1,
+            "175": 1,
+            "180": 2,
+            "181": 2,
+            "182": 2,
+            "184": 2,
+            "185": 2,
+            "187": 1,
+            "188": 1,
+            "190": 1,
+            "210": 5,
+            "230": 11,
+            "235": 8,
+            "238": 8,
+            "239": 8,
+            "244": 3,
+            "245": 3,
+            "248": 3,
+            "249": 3,
+            "257": 11,
+            "259": 8,
+            "260": 8,
+            "263": 3,
+            "264": 3,
+            "265": 3
+        },
+        "path": "/Users/zhong/solidity_study/solidity-study-task/task3/contracts/NFTAuction.sol",
+        "s": {
+            "1": 13,
+            "2": 38,
+            "3": 38,
+            "4": 13,
+            "5": 13,
+            "6": 13,
+            "7": 13,
+            "8": 13,
+            "9": 13,
+            "10": 13,
+            "11": 12,
+            "12": 11,
+            "13": 11,
+            "14": 11,
+            "15": 11,
+            "16": 8,
+            "17": 8,
+            "18": 2,
+            "19": 3,
+            "20": 3,
+            "21": 3,
+            "22": 1,
+            "23": 11,
+            "24": 11,
+            "25": 5,
+            "26": 3,
+            "27": 3,
+            "28": 2,
+            "29": 1,
+            "30": 1,
+            "31": 1,
+            "32": 0,
+            "33": 1,
+            "34": 1,
+            "35": 1,
+            "36": 2,
+            "37": 2,
+            "38": 2,
+            "39": 2,
+            "40": 2,
+            "41": 1,
+            "42": 1,
+            "43": 5,
+            "44": 8,
+            "45": 8,
+            "46": 8,
+            "47": 3,
+            "48": 3,
+            "49": 3,
+            "50": 3,
+            "51": 11,
+            "52": 8,
+            "53": 8,
+            "54": 3,
+            "55": 3,
+            "56": 3
+        },
+        "b": {
+            "1": [
+                13,
+                0
+            ],
+            "2": [
+                38,
+                0
+            ],
+            "3": [
+                38,
+                0
+            ],
+            "4": [
+                37,
+                1
+            ],
+            "5": [
+                13,
+                0
+            ],
+            "6": [
+                13,
+                0
+            ],
+            "7": [
+                13,
+                0
+            ],
+            "8": [
+                13,
+                0
+            ],
+            "9": [
+                10,
+                3
+            ],
+            "10": [
+                12,
+                1
+            ],
+            "11": [
+                11,
+                1
+            ],
+            "12": [
+                11,
+                0
+            ],
+            "13": [
+                11,
+                0
+            ],
+            "14": [
+                8,
+                3
+            ],
+            "15": [
+                8,
+                0
+            ],
+            "16": [
+                2,
+                6
+            ],
+            "17": [
+                3,
+                0
+            ],
+            "18": [
+                1,
+                2
+            ],
+            "19": [
+                1,
+                10
+            ],
+            "20": [
+                5,
+                0
+            ],
+            "21": [
+                3,
+                2
+            ],
+            "22": [
+                3,
+                0
+            ],
+            "23": [
+                2,
+                1
+            ],
+            "24": [
+                2,
+                0
+            ],
+            "25": [
+                1,
+                1
+            ],
+            "26": [
+                1,
+                0
+            ],
+            "27": [
+                2,
+                0
+            ],
+            "28": [
+                2,
+                0
+            ],
+            "29": [
+                2,
+                0
+            ],
+            "30": [
+                1,
+                1
+            ],
+            "31": [
+                11,
+                0
+            ],
+            "32": [
+                3,
+                0
+            ],
+            "33": [
+                8,
+                3
+            ]
+        },
+        "f": {
+            "1": 13,
+            "2": 38,
+            "3": 37,
+            "4": 38,
+            "5": 13,
+            "6": 5,
+            "7": 2,
+            "8": 5,
+            "9": 11,
+            "10": 8,
+            "11": 3,
+            "12": 11
+        },
+        "fnMap": {
+            "1": {
+                "name": "onlySeller",
+                "line": 58,
+                "loc": {
+                    "start": {
+                        "line": 58,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 61,
+                        "column": 4
+                    }
+                }
+            },
+            "2": {
+                "name": "onlyFactory",
+                "line": 63,
+                "loc": {
+                    "start": {
+                        "line": 63,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 66,
+                        "column": 4
+                    }
+                }
+            },
+            "3": {
+                "name": "constructor",
+                "line": 70,
+                "loc": {
+                    "start": {
+                        "line": 70,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 72,
+                        "column": 4
+                    }
+                }
+            },
+            "4": {
+                "name": "initialize",
+                "line": 75,
+                "loc": {
+                    "start": {
+                        "line": 75,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 90,
+                        "column": 4
+                    }
+                }
+            },
+            "5": {
+                "name": "placeBid",
+                "line": 92,
+                "loc": {
+                    "start": {
+                        "line": 92,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 140,
+                        "column": 4
+                    }
+                }
+            },
+            "6": {
+                "name": "endAuction",
+                "line": 142,
+                "loc": {
+                    "start": {
+                        "line": 142,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 177,
+                        "column": 4
+                    }
+                }
+            },
+            "7": {
+                "name": "cancelAuction",
+                "line": 179,
+                "loc": {
+                    "start": {
+                        "line": 179,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 191,
+                        "column": 4
+                    }
+                }
+            },
+            "8": {
+                "name": "getAuctionInfo",
+                "line": 193,
+                "loc": {
+                    "start": {
+                        "line": 193,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 223,
+                        "column": 4
+                    }
+                }
+            },
+            "9": {
+                "name": "setPriceFeed",
+                "line": 229,
+                "loc": {
+                    "start": {
+                        "line": 226,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 231,
+                        "column": 4
+                    }
+                }
+            },
+            "10": {
+                "name": "getEthPrice",
+                "line": 234,
+                "loc": {
+                    "start": {
+                        "line": 234,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 240,
+                        "column": 4
+                    }
+                }
+            },
+            "11": {
+                "name": "getTokenPrice",
+                "line": 243,
+                "loc": {
+                    "start": {
+                        "line": 243,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 250,
+                        "column": 4
+                    }
+                }
+            },
+            "12": {
+                "name": "convertToUSD",
+                "line": 253,
+                "loc": {
+                    "start": {
+                        "line": 253,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 267,
+                        "column": 4
+                    }
+                }
+            }
+        },
+        "statementMap": {
+            "1": {
+                "start": {
+                    "line": 59,
+                    "column": 8
+                },
+                "end": {
+                    "line": 59,
+                    "column": 51
+                }
+            },
+            "2": {
+                "start": {
+                    "line": 64,
+                    "column": 8
+                },
+                "end": {
+                    "line": 64,
+                    "column": 53
+                }
+            },
+            "3": {
+                "start": {
+                    "line": 76,
+                    "column": 8
+                },
+                "end": {
+                    "line": 76,
+                    "column": 59
+                }
+            },
+            "4": {
+                "start": {
+                    "line": 93,
+                    "column": 8
+                },
+                "end": {
+                    "line": 93,
+                    "column": 67
+                }
+            },
+            "5": {
+                "start": {
+                    "line": 94,
+                    "column": 8
+                },
+                "end": {
+                    "line": 94,
+                    "column": 59
+                }
+            },
+            "6": {
+                "start": {
+                    "line": 95,
+                    "column": 8
+                },
+                "end": {
+                    "line": 95,
+                    "column": 47
+                }
+            },
+            "7": {
+                "start": {
+                    "line": 97,
+                    "column": 8
+                },
+                "end": {
+                    "line": 97,
+                    "column": 78
+                }
+            },
+            "8": {
+                "start": {
+                    "line": 98,
+                    "column": 8
+                },
+                "end": {
+                    "line": 98,
+                    "column": 44
+                }
+            },
+            "9": {
+                "start": {
+                    "line": 99,
+                    "column": 8
+                },
+                "end": {
+                    "line": 99,
+                    "column": 46
+                }
+            },
+            "10": {
+                "start": {
+                    "line": 100,
+                    "column": 8
+                },
+                "end": {
+                    "line": 100,
+                    "column": 64
+                }
+            },
+            "11": {
+                "start": {
+                    "line": 101,
+                    "column": 8
+                },
+                "end": {
+                    "line": 101,
+                    "column": 72
+                }
+            },
+            "12": {
+                "start": {
+                    "line": 103,
+                    "column": 8
+                },
+                "end": {
+                    "line": 103,
+                    "column": 65
+                }
+            },
+            "13": {
+                "start": {
+                    "line": 104,
+                    "column": 8
+                },
+                "end": {
+                    "line": 104,
+                    "column": 3447
+                }
+            },
+            "14": {
+                "start": {
+                    "line": 108,
+                    "column": 8
+                },
+                "end": {
+                    "line": 108,
+                    "column": 70
+                }
+            },
+            "15": {
+                "start": {
+                    "line": 111,
+                    "column": 8
+                },
+                "end": {
+                    "line": 111,
+                    "column": 3656
+                }
+            },
+            "16": {
+                "start": {
+                    "line": 112,
+                    "column": 12
+                },
+                "end": {
+                    "line": 112,
+                    "column": 65
+                }
+            },
+            "17": {
+                "start": {
+                    "line": 114,
+                    "column": 12
+                },
+                "end": {
+                    "line": 114,
+                    "column": 3802
+                }
+            },
+            "18": {
+                "start": {
+                    "line": 115,
+                    "column": 16
+                },
+                "end": {
+                    "line": 115,
+                    "column": 59
+                }
+            },
+            "19": {
+                "start": {
+                    "line": 118,
+                    "column": 12
+                },
+                "end": {
+                    "line": 118,
+                    "column": 54
+                }
+            },
+            "20": {
+                "start": {
+                    "line": 119,
+                    "column": 12
+                },
+                "end": {
+                    "line": 119,
+                    "column": 3999
+                }
+            },
+            "21": {
+                "start": {
+                    "line": 125,
+                    "column": 12
+                },
+                "end": {
+                    "line": 125,
+                    "column": 4173
+                }
+            },
+            "22": {
+                "start": {
+                    "line": 126,
+                    "column": 16
+                },
+                "end": {
+                    "line": 126,
+                    "column": 71
+                }
+            },
+            "23": {
+                "start": {
+                    "line": 135,
+                    "column": 8
+                },
+                "end": {
+                    "line": 135,
+                    "column": 4452
+                }
+            },
+            "24": {
+                "start": {
+                    "line": 139,
+                    "column": 8
+                },
+                "end": {
+                    "line": 139,
+                    "column": 53
+                }
+            },
+            "25": {
+                "start": {
+                    "line": 143,
+                    "column": 8
+                },
+                "end": {
+                    "line": 143,
+                    "column": 62
+                }
+            },
+            "26": {
+                "start": {
+                    "line": 144,
+                    "column": 8
+                },
+                "end": {
+                    "line": 144,
+                    "column": 47
+                }
+            },
+            "27": {
+                "start": {
+                    "line": 145,
+                    "column": 8
+                },
+                "end": {
+                    "line": 145,
+                    "column": 4794
+                }
+            },
+            "28": {
+                "start": {
+                    "line": 152,
+                    "column": 8
+                },
+                "end": {
+                    "line": 152,
+                    "column": 4934
+                }
+            },
+            "29": {
+                "start": {
+                    "line": 154,
+                    "column": 12
+                },
+                "end": {
+                    "line": 154,
+                    "column": 5010
+                }
+            },
+            "30": {
+                "start": {
+                    "line": 161,
+                    "column": 12
+                },
+                "end": {
+                    "line": 161,
+                    "column": 5186
+                }
+            },
+            "31": {
+                "start": {
+                    "line": 162,
+                    "column": 16
+                },
+                "end": {
+                    "line": 162,
+                    "column": 52
+                }
+            },
+            "32": {
+                "start": {
+                    "line": 164,
+                    "column": 16
+                },
+                "end": {
+                    "line": 164,
+                    "column": 64
+                }
+            },
+            "33": {
+                "start": {
+                    "line": 167,
+                    "column": 12
+                },
+                "end": {
+                    "line": 167,
+                    "column": 71
+                }
+            },
+            "34": {
+                "start": {
+                    "line": 170,
+                    "column": 12
+                },
+                "end": {
+                    "line": 170,
+                    "column": 5506
+                }
+            },
+            "35": {
+                "start": {
+                    "line": 175,
+                    "column": 12
+                },
+                "end": {
+                    "line": 175,
+                    "column": 34
+                }
+            },
+            "36": {
+                "start": {
+                    "line": 180,
+                    "column": 8
+                },
+                "end": {
+                    "line": 180,
+                    "column": 55
+                }
+            },
+            "37": {
+                "start": {
+                    "line": 181,
+                    "column": 8
+                },
+                "end": {
+                    "line": 181,
+                    "column": 39
+                }
+            },
+            "38": {
+                "start": {
+                    "line": 182,
+                    "column": 8
+                },
+                "end": {
+                    "line": 182,
+                    "column": 43
+                }
+            },
+            "39": {
+                "start": {
+                    "line": 184,
+                    "column": 8
+                },
+                "end": {
+                    "line": 184,
+                    "column": 66
+                }
+            },
+            "40": {
+                "start": {
+                    "line": 185,
+                    "column": 8
+                },
+                "end": {
+                    "line": 185,
+                    "column": 66
+                }
+            },
+            "41": {
+                "start": {
+                    "line": 188,
+                    "column": 8
+                },
+                "end": {
+                    "line": 188,
+                    "column": 76
+                }
+            },
+            "42": {
+                "start": {
+                    "line": 190,
+                    "column": 8
+                },
+                "end": {
+                    "line": 190,
+                    "column": 30
+                }
+            },
+            "43": {
+                "start": {
+                    "line": 210,
+                    "column": 8
+                },
+                "end": {
+                    "line": 210,
+                    "column": 6509
+                }
+            },
+            "44": {
+                "start": {
+                    "line": 235,
+                    "column": 8
+                },
+                "end": {
+                    "line": 235,
+                    "column": 7067
+                }
+            },
+            "45": {
+                "start": {
+                    "line": 238,
+                    "column": 8
+                },
+                "end": {
+                    "line": 238,
+                    "column": 60
+                }
+            },
+            "46": {
+                "start": {
+                    "line": 239,
+                    "column": 8
+                },
+                "end": {
+                    "line": 239,
+                    "column": 20
+                }
+            },
+            "47": {
+                "start": {
+                    "line": 244,
+                    "column": 8
+                },
+                "end": {
+                    "line": 244,
+                    "column": 77
+                }
+            },
+            "48": {
+                "start": {
+                    "line": 245,
+                    "column": 8
+                },
+                "end": {
+                    "line": 245,
+                    "column": 7449
+                }
+            },
+            "49": {
+                "start": {
+                    "line": 248,
+                    "column": 8
+                },
+                "end": {
+                    "line": 248,
+                    "column": 60
+                }
+            },
+            "50": {
+                "start": {
+                    "line": 249,
+                    "column": 8
+                },
+                "end": {
+                    "line": 249,
+                    "column": 20
+                }
+            },
+            "51": {
+                "start": {
+                    "line": 257,
+                    "column": 8
+                },
+                "end": {
+                    "line": 257,
+                    "column": 7783
+                }
+            },
+            "52": {
+                "start": {
+                    "line": 259,
+                    "column": 12
+                },
+                "end": {
+                    "line": 259,
+                    "column": 43
+                }
+            },
+            "53": {
+                "start": {
+                    "line": 260,
+                    "column": 12
+                },
+                "end": {
+                    "line": 260,
+                    "column": 54
+                }
+            },
+            "54": {
+                "start": {
+                    "line": 263,
+                    "column": 12
+                },
+                "end": {
+                    "line": 263,
+                    "column": 52
+                }
+            },
+            "55": {
+                "start": {
+                    "line": 264,
+                    "column": 12
+                },
+                "end": {
+                    "line": 264,
+                    "column": 61
+                }
+            },
+            "56": {
+                "start": {
+                    "line": 265,
+                    "column": 12
+                },
+                "end": {
+                    "line": 265,
+                    "column": 68
+                }
+            }
+        },
+        "branchMap": {
+            "1": {
+                "line": 59,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 59,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 59,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 59,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 59,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "2": {
+                "line": 64,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 64,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 64,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 64,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 64,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "3": {
+                "line": 75,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 75,
+                            "column": 62
+                        },
+                        "end": {
+                            "line": 75,
+                            "column": 62
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 75,
+                            "column": 62
+                        },
+                        "end": {
+                            "line": 75,
+                            "column": 62
+                        }
+                    }
+                ]
+            },
+            "4": {
+                "line": 76,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 76,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 76,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 76,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 76,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "5": {
+                "line": 92,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 92,
+                            "column": 58
+                        },
+                        "end": {
+                            "line": 92,
+                            "column": 58
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 92,
+                            "column": 58
+                        },
+                        "end": {
+                            "line": 92,
+                            "column": 58
+                        }
+                    }
+                ]
+            },
+            "6": {
+                "line": 93,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 93,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 93,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 93,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 93,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "7": {
+                "line": 94,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 94,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 94,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 94,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 94,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "8": {
+                "line": 95,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 95,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 95,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 95,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 95,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "9": {
+                "line": 97,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 97,
+                            "column": 57
+                        },
+                        "end": {
+                            "line": 97,
+                            "column": 65
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 97,
+                            "column": 69
+                        },
+                        "end": {
+                            "line": 97,
+                            "column": 77
+                        }
+                    }
+                ]
+            },
+            "10": {
+                "line": 100,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 100,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 100,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 100,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 100,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "11": {
+                "line": 101,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 101,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 101,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 101,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 101,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "12": {
+                "line": 104,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 104,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 104,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 104,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 104,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "13": {
+                "line": 108,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 108,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 108,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 108,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 108,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "14": {
+                "line": 111,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 111,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 111,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 111,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 111,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "15": {
+                "line": 112,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 112,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 112,
+                            "column": 12
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 112,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 112,
+                            "column": 12
+                        }
+                    }
+                ]
+            },
+            "16": {
+                "line": 114,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 114,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 114,
+                            "column": 12
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 114,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 114,
+                            "column": 12
+                        }
+                    }
+                ]
+            },
+            "17": {
+                "line": 118,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 118,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 118,
+                            "column": 12
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 118,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 118,
+                            "column": 12
+                        }
+                    }
+                ]
+            },
+            "18": {
+                "line": 125,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 125,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 125,
+                            "column": 12
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 125,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 125,
+                            "column": 12
+                        }
+                    }
+                ]
+            },
+            "19": {
+                "line": 135,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 135,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 135,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 135,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 135,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "20": {
+                "line": 142,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 142,
+                            "column": 35
+                        },
+                        "end": {
+                            "line": 142,
+                            "column": 35
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 142,
+                            "column": 35
+                        },
+                        "end": {
+                            "line": 142,
+                            "column": 35
+                        }
+                    }
+                ]
+            },
+            "21": {
+                "line": 143,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 143,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 143,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 143,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 143,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "22": {
+                "line": 144,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 144,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 144,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 144,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 144,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "23": {
+                "line": 145,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 145,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 145,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 145,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 145,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "24": {
+                "line": 146,
+                "type": "cond-expr",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 146,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 146,
+                            "column": 31
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 146,
+                            "column": 36
+                        },
+                        "end": {
+                            "line": 146,
+                            "column": 56
+                        }
+                    }
+                ]
+            },
+            "25": {
+                "line": 152,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 152,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 152,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 152,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 152,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "26": {
+                "line": 161,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 161,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 161,
+                            "column": 12
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 161,
+                            "column": 12
+                        },
+                        "end": {
+                            "line": 161,
+                            "column": 12
+                        }
+                    }
+                ]
+            },
+            "27": {
+                "line": 179,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 179,
+                            "column": 38
+                        },
+                        "end": {
+                            "line": 179,
+                            "column": 38
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 179,
+                            "column": 38
+                        },
+                        "end": {
+                            "line": 179,
+                            "column": 38
+                        }
+                    }
+                ]
+            },
+            "28": {
+                "line": 179,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 179,
+                            "column": 49
+                        },
+                        "end": {
+                            "line": 179,
+                            "column": 49
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 179,
+                            "column": 49
+                        },
+                        "end": {
+                            "line": 179,
+                            "column": 49
+                        }
+                    }
+                ]
+            },
+            "29": {
+                "line": 184,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 184,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 184,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 184,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 184,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "30": {
+                "line": 185,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 185,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 185,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 185,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 185,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "31": {
+                "line": 229,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 229,
+                            "column": 15
+                        },
+                        "end": {
+                            "line": 229,
+                            "column": 15
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 229,
+                            "column": 15
+                        },
+                        "end": {
+                            "line": 229,
+                            "column": 15
+                        }
+                    }
+                ]
+            },
+            "32": {
+                "line": 244,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 244,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 244,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 244,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 244,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "33": {
+                "line": 257,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 257,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 257,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 257,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 257,
+                            "column": 8
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "contracts/NFTAuctionFactory.sol": {
+        "l": {
+            "17": 2,
+            "21": 1,
+            "22": 1,
+            "59": 27,
+            "60": 26,
+            "64": 25,
+            "65": 24,
+            "67": 23,
+            "68": 23,
+            "72": 23,
+            "76": 23,
+            "88": 23,
+            "93": 23,
+            "99": 23,
+            "102": 23,
+            "103": 23,
+            "104": 23,
+            "106": 23,
+            "117": 3,
+            "124": 3,
+            "129": 7,
+            "134": 2,
+            "135": 2,
+            "137": 2,
+            "141": 2
+        },
+        "path": "/Users/zhong/solidity_study/solidity-study-task/task3/contracts/NFTAuctionFactory.sol",
+        "s": {
+            "1": 2,
+            "2": 1,
+            "3": 1,
+            "4": 27,
+            "5": 26,
+            "6": 25,
+            "7": 24,
+            "8": 23,
+            "9": 23,
+            "10": 23,
+            "11": 23,
+            "12": 23,
+            "13": 23,
+            "14": 23,
+            "15": 23,
+            "16": 23,
+            "17": 3,
+            "18": 3,
+            "19": 7,
+            "20": 2,
+            "21": 2,
+            "22": 2
+        },
+        "b": {
+            "1": [
+                1,
+                0
+            ],
+            "2": [
+                1,
+                0
+            ],
+            "3": [
+                26,
+                1
+            ],
+            "4": [
+                25,
+                1
+            ],
+            "5": [
+                24,
+                1
+            ],
+            "6": [
+                23,
+                1
+            ],
+            "7": [
+                23,
+                0
+            ]
+        },
+        "f": {
+            "1": 2,
+            "2": 1,
+            "3": 1,
+            "4": 27,
+            "5": 3,
+            "6": 3,
+            "7": 7,
+            "8": 2
+        },
+        "fnMap": {
+            "1": {
+                "name": "constructor",
+                "line": 16,
+                "loc": {
+                    "start": {
+                        "line": 16,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 18,
+                        "column": 4
+                    }
+                }
+            },
+            "2": {
+                "name": "initialize",
+                "line": 20,
+                "loc": {
+                    "start": {
+                        "line": 20,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 23,
+                        "column": 4
+                    }
+                }
+            },
+            "3": {
+                "name": "_authorizeUpgrade",
+                "line": 28,
+                "loc": {
+                    "start": {
+                        "line": 26,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 28,
+                        "column": 35
+                    }
+                }
+            },
+            "4": {
+                "name": "createAuction",
+                "line": 49,
+                "loc": {
+                    "start": {
+                        "line": 49,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 113,
+                        "column": 4
+                    }
+                }
+            },
+            "5": {
+                "name": "allAuctionsLength",
+                "line": 116,
+                "loc": {
+                    "start": {
+                        "line": 116,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 118,
+                        "column": 4
+                    }
+                }
+            },
+            "6": {
+                "name": "getUserAuctions",
+                "line": 121,
+                "loc": {
+                    "start": {
+                        "line": 121,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 125,
+                        "column": 4
+                    }
+                }
+            },
+            "7": {
+                "name": "getUserAuctionCount",
+                "line": 128,
+                "loc": {
+                    "start": {
+                        "line": 128,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 130,
+                        "column": 4
+                    }
+                }
+            },
+            "8": {
+                "name": "endExpiredAuctions",
+                "line": 133,
+                "loc": {
+                    "start": {
+                        "line": 133,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 144,
+                        "column": 4
+                    }
+                }
+            }
+        },
+        "statementMap": {
+            "1": {
+                "start": {
+                    "line": 17,
+                    "column": 8
+                },
+                "end": {
+                    "line": 17,
+                    "column": 29
+                }
+            },
+            "2": {
+                "start": {
+                    "line": 21,
+                    "column": 8
+                },
+                "end": {
+                    "line": 21,
+                    "column": 31
+                }
+            },
+            "3": {
+                "start": {
+                    "line": 22,
+                    "column": 8
+                },
+                "end": {
+                    "line": 22,
+                    "column": 33
+                }
+            },
+            "4": {
+                "start": {
+                    "line": 59,
+                    "column": 8
+                },
+                "end": {
+                    "line": 59,
+                    "column": 65
+                }
+            },
+            "5": {
+                "start": {
+                    "line": 60,
+                    "column": 8
+                },
+                "end": {
+                    "line": 60,
+                    "column": 1699
+                }
+            },
+            "6": {
+                "start": {
+                    "line": 64,
+                    "column": 8
+                },
+                "end": {
+                    "line": 64,
+                    "column": 48
+                }
+            },
+            "7": {
+                "start": {
+                    "line": 65,
+                    "column": 8
+                },
+                "end": {
+                    "line": 65,
+                    "column": 71
+                }
+            },
+            "8": {
+                "start": {
+                    "line": 67,
+                    "column": 8
+                },
+                "end": {
+                    "line": 67,
+                    "column": 61
+                }
+            },
+            "9": {
+                "start": {
+                    "line": 68,
+                    "column": 8
+                },
+                "end": {
+                    "line": 68,
+                    "column": 2012
+                }
+            },
+            "10": {
+                "start": {
+                    "line": 76,
+                    "column": 8
+                },
+                "end": {
+                    "line": 76,
+                    "column": 2233
+                }
+            },
+            "11": {
+                "start": {
+                    "line": 88,
+                    "column": 8
+                },
+                "end": {
+                    "line": 88,
+                    "column": 2649
+                }
+            },
+            "12": {
+                "start": {
+                    "line": 93,
+                    "column": 8
+                },
+                "end": {
+                    "line": 93,
+                    "column": 2771
+                }
+            },
+            "13": {
+                "start": {
+                    "line": 99,
+                    "column": 8
+                },
+                "end": {
+                    "line": 99,
+                    "column": 45
+                }
+            },
+            "14": {
+                "start": {
+                    "line": 102,
+                    "column": 8
+                },
+                "end": {
+                    "line": 102,
+                    "column": 32
+                }
+            },
+            "15": {
+                "start": {
+                    "line": 104,
+                    "column": 8
+                },
+                "end": {
+                    "line": 104,
+                    "column": 45
+                }
+            },
+            "16": {
+                "start": {
+                    "line": 106,
+                    "column": 8
+                },
+                "end": {
+                    "line": 106,
+                    "column": 3110
+                }
+            },
+            "17": {
+                "start": {
+                    "line": 117,
+                    "column": 8
+                },
+                "end": {
+                    "line": 117,
+                    "column": 33
+                }
+            },
+            "18": {
+                "start": {
+                    "line": 124,
+                    "column": 8
+                },
+                "end": {
+                    "line": 124,
+                    "column": 33
+                }
+            },
+            "19": {
+                "start": {
+                    "line": 129,
+                    "column": 8
+                },
+                "end": {
+                    "line": 129,
+                    "column": 40
+                }
+            },
+            "20": {
+                "start": {
+                    "line": 134,
+                    "column": 8
+                },
+                "end": {
+                    "line": 134,
+                    "column": 3808
+                }
+            },
+            "21": {
+                "start": {
+                    "line": 135,
+                    "column": 12
+                },
+                "end": {
+                    "line": 135,
+                    "column": 56
+                }
+            },
+            "22": {
+                "start": {
+                    "line": 137,
+                    "column": 12
+                },
+                "end": {
+                    "line": 137,
+                    "column": 3931
+                }
+            }
+        },
+        "branchMap": {
+            "1": {
+                "line": 20,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 20,
+                            "column": 41
+                        },
+                        "end": {
+                            "line": 20,
+                            "column": 41
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 20,
+                            "column": 41
+                        },
+                        "end": {
+                            "line": 20,
+                            "column": 41
+                        }
+                    }
+                ]
+            },
+            "2": {
+                "line": 28,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 28,
+                            "column": 24
+                        },
+                        "end": {
+                            "line": 28,
+                            "column": 24
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 28,
+                            "column": 24
+                        },
+                        "end": {
+                            "line": 28,
+                            "column": 24
+                        }
+                    }
+                ]
+            },
+            "3": {
+                "line": 59,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 59,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 59,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 59,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 59,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "4": {
+                "line": 60,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 60,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 60,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 60,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 60,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "5": {
+                "line": 64,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 64,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 64,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 64,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 64,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "6": {
+                "line": 65,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 65,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 65,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 65,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 65,
+                            "column": 8
+                        }
+                    }
+                ]
+            },
+            "7": {
+                "line": 88,
+                "type": "if",
+                "locations": [
+                    {
+                        "start": {
+                            "line": 88,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 88,
+                            "column": 8
+                        }
+                    },
+                    {
+                        "start": {
+                            "line": 88,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 88,
+                            "column": 8
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "contracts/NFTAuctionFactoryV2.sol": {
+        "l": {
+            "8": 1
+        },
+        "path": "/Users/zhong/solidity_study/solidity-study-task/task3/contracts/NFTAuctionFactoryV2.sol",
+        "s": {
+            "1": 1
+        },
+        "b": {},
+        "f": {
+            "1": 1
+        },
+        "fnMap": {
+            "1": {
+                "name": "getVersion",
+                "line": 7,
+                "loc": {
+                    "start": {
+                        "line": 7,
+                        "column": 4
+                    },
+                    "end": {
+                        "line": 9,
+                        "column": 4
+                    }
+                }
+            }
+        },
+        "statementMap": {
+            "1": {
+                "start": {
+                    "line": 8,
+                    "column": 8
+                },
+                "end": {
+                    "line": 8,
+                    "column": 21
+                }
+            }
+        },
+        "branchMap": {}
+    }
+}
